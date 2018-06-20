@@ -1,10 +1,3 @@
-app00
-~96p.4장 dataSource 를 이용하여 MyBatis 과 MySQL Connection test 
-~89p.4장 spring-jdbc 모듈을 이용한 DataSource Connection test 
-~76p.3장 예제를 위한 MySQL 설정과 스프링 테스트 
-~48p.1장 개발환경의 설정 
-Initial commit 
-
 # Lec_Spring_0102  
 코드로 배우는 스프링 웹프로젝트 책 공부하며 만든 실습예제.  
 ===================================================================
