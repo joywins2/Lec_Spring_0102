@@ -32,5 +32,24 @@
 		<property name="username" value="joywins2"></property>
 		<property name="password" value="tiger"></property>
 	</bean>	
+		 		
+	<!--
+		...90p.	DataSource 설정으로 JDBC 연결후, MyBatis와 MySql을 연동시킴. 
+		   SqlSessionFactory : myBatis와 스프링의 Connection 생성.
+	 -->		 		
+	<bean id="sqlSessionFactory" 
+	      class="org.mybatis.spring.SqlSessionFactoryBean">	   
+	    <!--
+	    	...90p.	JDBC커넥션을 처리하는 DataSource와 mybatis를 연결. 
+	    -->
+	 	<property name="dataSource" ref="dataSource" />	
+	 	
+	 	<!-- 
+	 		...92p.mybatis 전용 설정파일을 스프링과 함께 작동하도록 연결함.
+	 		app00/src/main/resources/mybatis-config.xml
+	 	 -->
+	 	<property name="configLocation" 
+				value="classpath:/mybatis-config.xml"></property>
+	</bean>	 
 		
 </beans>
