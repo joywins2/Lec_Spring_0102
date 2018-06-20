@@ -93,6 +93,8 @@
 		<!-- Servlet -->
 		<!--
 			...Caused by: java.lang.ClassNotFoundException: javax.servlet.SessionCookieConfig
+			   https://stackoverflow.com/questions/21561432/failed-to-load-applicationcontext-during-spring-unit-test
+			...Caused by: java.lang.ClassNotFoundException: javax.servlet.SessionCookieConfig
 			   http://www.cnblogs.com/canger/p/7875546.html
 		 -->
 		<dependency>
