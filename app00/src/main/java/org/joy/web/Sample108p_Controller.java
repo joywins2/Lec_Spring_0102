@@ -21,7 +21,8 @@ public class Sample108p_Controller {
 	@RequestMapping("doC")
 	public String doC( @ModelAttribute("msg") String msg){
 		
-		logger.info("zweb.doC called..............................");
+		logger.info("Yes, web.doC called..............................");
+		System.out.println("msg : "+ msg);
 		
 		return "result";
 		

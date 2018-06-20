@@ -25,8 +25,10 @@ public class Sample110p_Controller {
 		
 		//make sample data
 		ProductVO product = new ProductVO("Sample Product 입니다.", 10000);
+		System.out.println("product : " + product.toString());
 		
 		logger.info("doD");
+		
 	
 		//...addAttribute(객체)처럼 객체이름을 별도로 지정하지 않은 경우, 자동으로 저장되는
 		//...객체 클래스명의 앞글자를 소문자로 처리한 이름이 객체이름이 됨.
