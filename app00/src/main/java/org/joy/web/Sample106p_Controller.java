@@ -5,6 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/*
+ * ...107p.만약 그냥 404만 나오면 @Controller 표기했는지 확인하고
+ *    mybatisconfig.xml 위치가 src/main/resources 인지 확인할 것.
+*/
+
 @Controller
 public class Sample106p_Controller {
 
