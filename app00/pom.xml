@@ -168,6 +168,18 @@
 			<version>${org.springframework-version}</version>
 		</dependency>	
 
+		<!-- 
+			...116, 354, 400, 419, 563p.JSON, Jackson-databind 라이브러리를 검색했고,
+			적절한 객체를 반환하고, @ResponseBody 어노테이션을 추가함. 
+		-->			
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.9.5</version>
+		</dependency>
+				
+
 		        
 	</dependencies>
     <build>
