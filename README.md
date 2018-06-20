@@ -4,6 +4,13 @@
 
 ## Folder Description  
 ### app00  
+
+* ~122p.5장 WAS 없이 Controller 를 테스트하기 
+- ~117p.5장 JSON 데이터를 리턴하는 타입의 Controller 
++ ~115p.5장 결과값을 리다이렉트하는 리턴 타입의 Controller 
+* ~113p.5장 결과 데이터 객체 리턴 타입의 Controller 
+- ~110p.5장 String 리턴 타입의 Controller 
++ ~107p.5장 void 리턴 타입의 Controller 
 * ~96p.4장 dataSource 를 이용하여 MyBatis 과 MySQL Connection test 
 - ~89p.4장 spring-jdbc 모듈을 이용한 DataSource Connection test 
 + ~76p.3장 예제를 위한 MySQL 설정과 스프링 테스트 
