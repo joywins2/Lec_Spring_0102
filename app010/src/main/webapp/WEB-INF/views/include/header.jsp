@@ -13,6 +13,11 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Ionicons -->
     <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    
+    <!-- 
+    	...170p.Tomcat Web Modules 에서 경로를 '/'로 변경할 것.
+     -->
+    
     <!-- Theme style -->
     <link href="/resources/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
