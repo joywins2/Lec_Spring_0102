@@ -5,6 +5,8 @@
 ## Folder Description  
 ### app00  
 
+- ~146p.6장 MyBatis mapper #{} 문법 사용하기  
++ ~141p.6장 MyBatis mapper 테스트와 log4jdbc-log4j2 사용하기  
 * ~122p.5장 WAS 없이 Controller 를 테스트하기 
 - ~117p.5장 JSON 데이터를 리턴하는 타입의 Controller 
 + ~115p.5장 결과값을 리다이렉트하는 리턴 타입의 Controller 
