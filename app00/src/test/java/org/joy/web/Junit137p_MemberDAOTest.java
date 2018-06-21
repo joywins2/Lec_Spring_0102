@@ -1,5 +1,8 @@
 package org.joy.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.joy.dao.IF_MemberDAO;
@@ -23,13 +26,13 @@ public class Junit137p_MemberDAOTest {
 	private IF_MemberDAO dao;
 	
 
-	@Test
+	//@Test
 	public void testTime()throws Exception{		
 		System.out.println("getTime() = " + dao.getTime());
 		
 	}		
 	
-	@Test
+	//@Test
 	public void testInsertMember()throws Exception{		
 		MemberVO vo = new MemberVO();
 		vo.setUser_id("user_id02");
@@ -39,6 +42,29 @@ public class Junit137p_MemberDAOTest {
 		
 		dao.insertMember(vo);		
 	}	
+	
+	//@Test
+	public void selectMember()throws Exception{		
+		MemberVO vo = new MemberVO();
+		vo.setUser_id("user_id02");
+		vo.setUser_pw("user_pw02");
+		vo.setUser_name("USER02");
+		vo.setEmail("user02@joy.org");
+		
+		dao.selectMember(vo.getUser_id());		
+	}	
+
+	@Test
+	public void selectWithPw()throws Exception{		
+		MemberVO vo = new MemberVO();
+		vo.setUser_id("user_id02");
+		vo.setUser_pw("user_pw02");
+		vo.setUser_name("USER02");
+		vo.setEmail("user02@joy.org");
+		
+		dao.selectWithPw(vo.getUser_id(), vo.getUser_pw());		
+	}	
+
 
 
 }

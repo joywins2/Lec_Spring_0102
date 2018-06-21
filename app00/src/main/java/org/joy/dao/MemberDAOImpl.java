@@ -1,5 +1,8 @@
 package org.joy.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -40,6 +43,21 @@ public class MemberDAOImpl implements IF_MemberDAO {
 	@Override
 	public void insertMember(MemberVO vo) {
 		sqlSession.insert(namespace+".insertMember", vo);
+	}
+
+	@Override
+	public MemberVO selectMember(String user_id) throws Exception {
+		return (MemberVO) sqlSession.selectOne(namespace+".selectMember", user_id);
+	}
+
+	@Override
+	public MemberVO selectWithPw(String user_id, String user_pw) throws Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("user_id", user_id);
+		paramMap.put("user_pw", user_pw);
+		
+		return sqlSession.selectOne(namespace+".selectWithPw", paramMap);
 	}
 
 }
