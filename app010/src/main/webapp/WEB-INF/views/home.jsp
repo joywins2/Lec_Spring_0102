@@ -1,7 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 
-<!-- ...169, 625p. -->
+<!-- 
+	...169, 625p.
+	   Bootstrap sample file download URL :
+	   http://cafe.naver.com/gugucoding/798 
+-->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   						 pageEncoding="UTF-8"%>
 
