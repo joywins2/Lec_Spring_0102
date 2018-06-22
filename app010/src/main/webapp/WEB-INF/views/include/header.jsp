@@ -15,7 +15,7 @@
     <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
     
     <!-- 
-    	...170p.Tomcat Web Modules 에서 경로를 '/'로 변경할 것.
+    	...170p, 199p.Tomcat Web Modules 에서 경로를 '/'로 변경할 것.
      -->
     
     <!-- Theme style -->
