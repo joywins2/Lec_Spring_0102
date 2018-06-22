@@ -84,9 +84,9 @@ public class BoardController {
 	    * ...195p.WEB-INF/spring/appServlet/servlet-context.xml에서 
 	    * ...org.springframework.web.servlet.view.InternalResourceViewResolver가
 	    * ...뷰의 경로를 prefix, suffix로 설정했음.
-	    * ...실제경로는 '/WEB-INF/views/zboard/success.jsp'가 됨.
+	    * ...실제경로는 '/WEB-INF/views/board/success.jsp'가 됨.
 	    */
-	   return "/zboard/success";
+	   return "/board/success";
 	   
 	   }	
 	  
