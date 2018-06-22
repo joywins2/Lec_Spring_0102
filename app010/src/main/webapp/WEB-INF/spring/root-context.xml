@@ -58,11 +58,12 @@
 	</bean>
 		
 	<!-- 
-		...136p. 스프링이 MemberDAOImpl가 있는 패키지를 스캔해야만 @Repository 어노테이션이 작동해서
+		...136, 176, 186p. 스프링이 MemberDAOImpl가 있는 패키지를 스캔해야만 @Repository 어노테이션이 작동해서
 		스프링의 빈으로 등록함.
 		패키지탐색기에서 DAOImpl.java 파일 아이콘 우측상단에 s글자가 보이면 등록된 것임. 
 	 -->
-	<context:component-scan base-package="org.joy.dao"></context:component-scan>	
+	<context:component-scan base-package="org.joy.dao"></context:component-scan>
+	<context:component-scan base-package="org.joy.service"></context:component-scan>		
 		
 				
 </beans>

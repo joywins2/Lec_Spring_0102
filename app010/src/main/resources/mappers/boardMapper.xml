@@ -34,7 +34,16 @@
 		2. 파라미터가 하나이고, 기본자료형이나 문자열인 경우 값이 그대로 전달됨.
 		3. 파라미터가 Map타입인 경우 '#{num}'은 Map객체의 키값이 'num'인 값을 찾는다.
  -->   
-	<select id="select" resultType="org.joy.domain.BoardVO">
+ 
+ <!--
+	183p.mybatis-config.xml::typeAlias태그를 사용하면 boardMapper.xml에서 
+	매번 parameterType, resultType을 패키지까지 포함된 클래스명을 작성하는 번거로움을 덜어줌. 
+-->
+<!-- mybatis-config.xml::typeAlias 적용전
+ <select id="select" resultType="org.joy.domain.BoardVO">
+ -->
+<!-- mybatis-config.xml::typeAlias 적용후 --> 
+	<select id="select" resultType="BoardVO"> 	
 	 select 
 	   bno, title, content, writer, regdate, view_cnt 
 	 from 
