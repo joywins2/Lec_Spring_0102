@@ -88,8 +88,9 @@ public class BoardController {
 	 * 	  뷰에 원하는 데이터를 담아서 전달하는 상자 역할.
 	 */
 	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
-	public void listAll( @ModelAttribute("msg")String msg) throws Exception {
+	public void listAll( Model model, @ModelAttribute("msg")String msg) throws Exception {
 		logger.info("show all list1......................");
+		model.addAttribute("list", service.listAll());
 	}
 
 }

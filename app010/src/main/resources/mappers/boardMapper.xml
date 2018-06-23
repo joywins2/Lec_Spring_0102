@@ -68,7 +68,7 @@
 	 <select id="listAll" resultType="org.joy.domain.BoardVO">
 		 <![CDATA[
 		 select 
-		   bno, title, content, writer, regdate, view_count 
+		   bno, title, content, writer, regdate, view_cnt 
 		 from 
 		   ztbl_board 
 		 where bno > 0 
