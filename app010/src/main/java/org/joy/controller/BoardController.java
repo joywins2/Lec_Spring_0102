@@ -3,6 +3,7 @@ package org.joy.controller;
 import javax.inject.Inject;
 
 import org.joy.domain.BoardVO;
+import org.joy.domain.Criteria;
 import org.joy.service.IF_BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,5 +142,24 @@ public class BoardController {
 
 		return "redirect:/board/listAll";
 	}
+
+	/*
+	 * ...262p. 스프링MVC의 컨트롤러는 특정 URL에 해당하는 메서드를 실행할 때, 
+	 *    파라미터의 타입을 보고, 해당 객체를 자동으로 생성해냄. 
+	 *    파라미터가 자동으로 수집되므로, 바로 이전에 만든 Criteria 클래스를 
+	 *    그대로 사용함. 
+	 *    모든 조회는 GET방식을 사용함. 
+	 *    http://localhost:8080/board/listCriteria
+	 *    http://localhost:8080/board/listCri?page=2
+	 *    http://localhost:8080/board/listCri?page=2&perPageNum=20
+	 */
+	@RequestMapping(value = "/listCri", method = RequestMethod.GET)
+	public void listCriteria(Criteria cri, Model model) throws Exception {
+
+		logger.info("show list Page with Criteria......................");
+
+		model.addAttribute("list", service.listCriteria(cri));
+	}
+
 
 }
