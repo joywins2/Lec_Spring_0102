@@ -86,5 +86,16 @@
 	 ]]>
 	</select>
 
+	<select id="countBno" resultType="int">
+	 <![CDATA[
+	 select 
+	   count(bno) 
+	 from 
+	   ztbl_board 
+	 where 
+	   bno > 0 
+	 ]]>
+	</select>
+
 
 </mapper>

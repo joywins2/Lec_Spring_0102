@@ -98,4 +98,14 @@ public class BoardDAOImpl implements IF_BoardDAO {
 	    return session.selectList(namespace + ".listCriteria", cri);
 	}
 
+	/*
+	 * ...279p. Criteria 가 사용되는 이유 :
+	 *    http://cafe.naver.com/gugucoding/830
+	 *    http://cafe.naver.com/gugucoding/1506 
+	 */
+	@Override
+	public int countBno(Criteria cri) throws Exception {
+	    return session.selectOne(namespace + ".countBno", cri);
+	}
+
 }

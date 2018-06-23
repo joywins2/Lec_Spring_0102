@@ -25,5 +25,7 @@ public interface IF_BoardService {
 	  public List<BoardVO> listAll() throws Exception;
 	
 	  public List<BoardVO> listCriteria(Criteria cri) throws Exception;
+	  
+	  public int countBno(Criteria cri) throws Exception;
 
 }

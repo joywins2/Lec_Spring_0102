@@ -28,4 +28,6 @@ public interface IF_BoardDAO {
 	// ...256p. 필요한 getPageStart()와 getPerPageNum()를 호출한 결과를 사용함.
 	public List<BoardVO> listCriteria(Criteria cri) throws Exception;
 
+	public int countBno(Criteria cri) throws Exception;
+
 }

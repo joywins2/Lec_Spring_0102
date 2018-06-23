@@ -53,4 +53,9 @@ public class BoardServiceImpl implements IF_BoardService {
 		return dao.listCriteria(cri);
 	}
 
+	@Override
+	public int countBno(Criteria cri) throws Exception {
+		return dao.countBno(cri);
+	}
+
 }
