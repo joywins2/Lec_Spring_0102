@@ -96,17 +96,32 @@ public class BoardController {
 
 	/*
 	 * ...219p.@ReqeustParam("bno")는 Servlet::request.getParam("bno")처럼 동작함.
-	 * ...@RequestParam을 사용하여 외부에서 전달될 bno값을 파라미터로 받는 것을 더욱
-	 * ...명확하게 표현함.
-	 * ...Servlet.HttpServletRequest와 다른 점은 문자열, 숫자, 날짜 등의 형변환이 가능함.
-	 * ...Model.addAttribute()작업할때 아무런 이름 없이 데이터를 넣으면 자동으로
-	 * ...클래스의 이름을 소문자로 시작해서 사용한다.
-	 * ...BoardVO org.joywins.service.IF_BoardService.read(Integer bno) throws Exception처럼
-	 * ...여기서 들어가는 데이터는 BoardVO객체이므로 boardVO라는 이름으로 저장됨.
+	 * 
+	 * @RequestParam을 사용하여 외부에서 전달될 bno값을 파라미터로 받는 것을 더욱 명확하게 표현함.
+	 * Servlet.HttpServletRequest와 다른 점은 문자열, 숫자, 날짜 등의 형변환이 가능함.
+	 * Model.addAttribute()작업할때 아무런 이름 없이 데이터를 넣으면 자동으로 클래스의 이름을 소문자로 시작해서 사용한다.
+	 * BoardVO org.joywins.service.IF_BoardService.read(Integer bno) throws
+	 * Exception처럼 여기서 들어가는 데이터는 BoardVO객체이므로 boardVO라는 이름으로 저장됨.
 	 */
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public void read(@RequestParam("bno") int bno, Model model) throws Exception {
 		model.addAttribute(service.read(bno));
+	}
+
+	/*
+	 * ...225p.@RequestParam("bno")를 제외해도 bno에 값이 들어옴. 219p, 195p,
+	 * 334p. @RequestParam 은 외부에서 전달받는 값임을 명확하게 표현하기 위해 사용.
+	 */
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public String delete(@RequestParam("bno") int bno, RedirectAttributes rttr) throws Exception {
+
+		service.delete(bno);
+
+		rttr.addFlashAttribute("msg", "SUCCESS");
+
+		logger.info("삭제처리, bno = " + bno);
+
+		return "redirect:/board/listAll";
 	}
 
 }
