@@ -124,4 +124,22 @@ public class BoardController {
 		return "redirect:/board/listAll";
 	}
 
+	// ...227p.수정페이지로 이동.
+	@RequestMapping(value = "/modify", method = RequestMethod.GET)
+	public void modifyGET(@RequestParam("bno") int bno, Model model) throws Exception {
+		logger.info("수정페이지로 이동, modify/ get/ bno = " + bno);
+		model.addAttribute(service.read(bno));
+	}
+
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String modifyPOST(BoardVO board, RedirectAttributes rttr) throws Exception {
+
+		logger.info("수정처리, modify post BoardVO = " + board.toString());
+
+		service.update(board);
+		rttr.addFlashAttribute("msg", "SUCCESS");
+
+		return "redirect:/board/listAll";
+	}
+
 }
