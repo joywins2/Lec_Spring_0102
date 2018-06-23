@@ -8,8 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //...192p.
 
@@ -41,55 +43,53 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/board/*")
 public class BoardController {
-	  private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
-	  @Inject
-	  private IF_BoardService service;
-	  /*
-	   * ...194p.등록작업은 등록페이지로 이동(Get방식)과 데이터를 처리(Post방식)으로 구분됨.
-	   */	  
-	  @RequestMapping(value = "/create", method = RequestMethod.GET)
-	  public void createGET(BoardVO board, Model model) throws Exception {
-	    logger.info("createGet called ...........");
-	    
-	  }	  
+	@Inject
+	private IF_BoardService service;
 
-	  
-	  /*
-	   * ...195p.@RequestMapping의 value, method 속성은 배열로 필요시 아래와 같이 처리할 수 있다.
-	   * @RequestMapping(value = "/register", method = {RequestMethod.POST, RequestMethod.GET})
-	   */
-	   @RequestMapping(value = "/create", method = RequestMethod.POST)
-	   public String createPOST(BoardVO board, Model model) throws Exception {
-	  
-	   logger.info("create post ...........");
-	   logger.info(board.toString());
-	  
-	   service.create(board);
-	  
-	   /*
-	    * ...112p, 196p. Model클래스는 스프링MVC에서 제공하는 데이터 전달용 객체이고, Map처럼
-	    *    (key, value)로 구성되어 데이터를 저장함.
-	    *    Servlet에서는 RequestDispatcher에 데이터를 저장했음.
-	    *    자동으로 BoardVO 로 모든 데이터를 수집하고, 향후에 뷰로 데이터를 전달할 가능성이
-	    *    있으므로, Model 객체를 받도록 설계했음.
-	    *    
-	    * ...235p. ModelAndView : @ControllerAdvice 클래스의 메서드에서 사용함.
-	    *    하나의 객체에 Model 데이터와 View 처리를 동시에 할 수 있는 객체임.
-	    *    최근에는 지정된 파라미터를 사용하는 경우외에는 잘 쓰지 않음. 
-	    */
-	   model.addAttribute("result", "success");
-	  
-	   /*
-	    * ...195p.WEB-INF/spring/appServlet/servlet-context.xml에서 
-	    * ...org.springframework.web.servlet.view.InternalResourceViewResolver가
-	    * ...뷰의 경로를 prefix, suffix로 설정했음.
-	    * ...실제경로는 '/WEB-INF/views/board/success.jsp'가 됨.
-	    */
-	   return "/board/success";
-	   
-	   }	
-	  
+	/*
+	 * ...194p.등록작업은 등록페이지로 이동(Get방식)과 데이터를 처리(Post방식)으로 구분됨.
+	 */
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public void createGET(BoardVO board, Model model) throws Exception {
+		logger.info("createGet called ...........");
 
+	}
+
+	/*
+	 * ...210p.위와 같이 Model을 이용한 경우 동일한 내용의 도배현상은 막을 수 있으나, ...새로고침할 때
+	 * /zboard/listAll?result=success은 계속 남아있는 문제점이 남음.
+	 * ...Spring.RedirectAttributes객체는 리다이렉트 시점에 한번만 사용되는 데이터를 ...전송할 수 있는
+	 * addFlashAttribute()를 지원하여 페이지이동 및 데이터 전달후
+	 * ...http://localhost:8080/board/listAll로 깔끔하게 정리됨.
+	 */
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public String createPOST(BoardVO board, RedirectAttributes rattr) throws Exception {
+
+		logger.info("create post addFlashAttribute...........");
+		logger.info(board.toString());
+
+		service.create(board);
+
+		//...http://cafe.naver.com/gugucoding/1697
+		rattr.addFlashAttribute("msg", "SUCCESS");
+
+		return "redirect:/board/listAll";
+
+	}
+
+	/*
+	 * 
+	 * ...108p, 309p.http://localhost:8080/web/doC?msg=Hi5
+		   @ModelAttribute 는 자동으로 해당 객체를 뷰까지 전달함. 
+	 * ...http://cafe.naver.com/gugucoding/134
+	 * ...112p. Model 클래스 : 스프링 MVC 가 기본으로 제공함. 
+	 * 	  뷰에 원하는 데이터를 담아서 전달하는 상자 역할.
+	 */
+	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
+	public void listAll( @ModelAttribute("msg")String msg) throws Exception {
+		logger.info("show all list1......................");
+	}
 
 }
