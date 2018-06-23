@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //...192p.
@@ -72,7 +73,7 @@ public class BoardController {
 
 		service.create(board);
 
-		//...http://cafe.naver.com/gugucoding/1697
+		// ...http://cafe.naver.com/gugucoding/1697
 		rattr.addFlashAttribute("msg", "SUCCESS");
 
 		return "redirect:/board/listAll";
@@ -82,15 +83,30 @@ public class BoardController {
 	/*
 	 * 
 	 * ...108p, 309p.http://localhost:8080/web/doC?msg=Hi5
-		   @ModelAttribute 는 자동으로 해당 객체를 뷰까지 전달함. 
-	 * ...http://cafe.naver.com/gugucoding/134
-	 * ...112p. Model 클래스 : 스프링 MVC 가 기본으로 제공함. 
-	 * 	  뷰에 원하는 데이터를 담아서 전달하는 상자 역할.
+	 * 
+	 * @ModelAttribute 는 자동으로 해당 객체를 뷰까지 전달함.
+	 * ...http://cafe.naver.com/gugucoding/134 ...112p. Model 클래스 : 스프링 MVC 가 기본으로
+	 * 제공함. 뷰에 원하는 데이터를 담아서 전달하는 상자 역할.
 	 */
 	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
-	public void listAll( Model model, @ModelAttribute("msg")String msg) throws Exception {
+	public void listAll(Model model, @ModelAttribute("msg") String msg) throws Exception {
 		logger.info("show all list1......................");
 		model.addAttribute("list", service.listAll());
+	}
+
+	/*
+	 * ...219p.@ReqeustParam("bno")는 Servlet::request.getParam("bno")처럼 동작함.
+	 * ...@RequestParam을 사용하여 외부에서 전달될 bno값을 파라미터로 받는 것을 더욱
+	 * ...명확하게 표현함.
+	 * ...Servlet.HttpServletRequest와 다른 점은 문자열, 숫자, 날짜 등의 형변환이 가능함.
+	 * ...Model.addAttribute()작업할때 아무런 이름 없이 데이터를 넣으면 자동으로
+	 * ...클래스의 이름을 소문자로 시작해서 사용한다.
+	 * ...BoardVO org.joywins.service.IF_BoardService.read(Integer bno) throws Exception처럼
+	 * ...여기서 들어가는 데이터는 BoardVO객체이므로 boardVO라는 이름으로 저장됨.
+	 */
+	@RequestMapping(value = "/read", method = RequestMethod.GET)
+	public void read(@RequestParam("bno") int bno, Model model) throws Exception {
+		model.addAttribute(service.read(bno));
 	}
 
 }
