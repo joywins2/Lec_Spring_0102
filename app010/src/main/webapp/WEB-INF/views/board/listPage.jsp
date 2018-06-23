@@ -45,7 +45,17 @@
 					
 						<tr>
 							<td>${boardVO.bno}</td>
-							<td><a href='/board/read?bno=${boardVO.bno}'>${boardVO.title}</a></td>
+								<!-- 
+								...216p.↓.
+								...http://localhost:8080/board/listPage?page=256
+								<td><a href='/board/read?bno=${boardVO.bno}'>${boardVO.title}</a></td>
+								...286p.↓.페이지정보를 유지하게 함.
+								...http://localhost:8080/board/listPage?page=19&perPageNum=10로 호출가능.
+								 -->
+								<td><a href='/board/readPage${pageMaker.makeQuery(pageMaker.cri.page)}&bno=${boardVO.bno}'>
+										${boardVO.title}
+									</a>
+								</td>
 							<td>${boardVO.writer}</td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"
 												value="${boardVO.regdate}" /></td>
@@ -69,8 +79,15 @@
 								<!-- 
 									...276p.↓.
 									<a href="/board/listPage?page=250">&laquo;</a>
-								-->
 									<a href="/board/listPage?page=${pageMaker.startPage - 1}">&laquo;</a>
+									
+									...288p.↓.페이지정보를 유지하게 함.
+									...★'?page='가 필요없음에 주의할 것.
+									<a href="/board/listPage?page=?page=250&perPageNum=10">&laquo;</a>									
+									<a href="/board/listPage?page=${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a>
+								 -->
+									<a href="/board/listPage${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a>
+									<!-- startPage : ${pageMaker.makeQuery(pageMaker.startPage - 1)} -->
 								</li>
 							</c:if>
 
@@ -83,7 +100,14 @@
 									현재 페이지 번호만을 강조시킴.
 								 -->									   
 								<li <c:out value="${pageMaker.cri.page == idx?'class =active':''}"/>>
-								<a href="listPage?page=${idx}">${idx}</a>
+								<!-- 
+									...277p.↓.
+									<a href="listPage?page=${idx}">${idx}</a>
+									...287p.↓.
+									<a href="/board/listPage?page=251&perPageNum=10">251</a>
+									<a href="/board/listPage${pageMaker.makeQuery(idx)}">${idx}</a>
+								 -->
+									<a href="/board/listPage${pageMaker.makeQuery(idx)}">${idx}</a>
 								</li>
 							</c:forEach>
 
@@ -92,8 +116,15 @@
 								<!-- 
 									...276p.↓.
 									<a href="/board/listPage?page=250">&laquo;</a>
-								 -->								
 									<a href="/board/listPage?page=${pageMaker.endPage + 1}">&laquo;</a>
+									
+									...288p.↓.페이지정보를 유지하게 함.
+									...★'?page='가 필요없음에 주의할 것.
+									<a href="/board/listPage?page=31&perPageNum=10">&raquo;</a>
+									<a href="/board/listPage${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a>
+								 -->								
+									<a href="/board/listPage${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a>
+									<!-- endPage : ${pageMaker.next}, ${pageMaker.endPage } -->
 								</li>
 							</c:if>
 
@@ -123,5 +154,12 @@
 </script>
 
 
+<script>    
+    $(".pagination li a").on("click", function(event){
+    //...290p.선택사항.
+    //   http://cafe.naver.com/gugucoding/2634
+    //   jQuery 로 처리하려면, 페이지목록을 276p 처럼 해야 함. 
+    })    
+</script>
 
 <%@include file="../include/footer.jsp"%>

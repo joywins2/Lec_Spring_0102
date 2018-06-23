@@ -64,6 +64,28 @@ public class BoardController {
 	public void read(@RequestParam("bno") int bno, Model model) throws Exception {
 		model.addAttribute(service.read(bno));
 	}
+	
+	/*
+	 * ...292p.페이징 처리가 된 후, 조회 페이지는 다시 목록 페이지로 돌아가기 위해 다음 3가지 정보가 필요함.
+	 *    1. 현재 목록 페이지의 페이지 번호(page).
+	 *    2. 현재 목록 페이지의 페이지당 데이터 수(perPageNum).
+	 *    3. 현재 조회하는 게시물의 번호(bno).
+	 *    ★같은 메서드를 요청별로 오버로딩할 수 있다.
+	 *    '/board/readPage?bno=xx&page=x&perPageNum=xxx'와 같은 식으로 요청을 받고,
+	 *    http://localhost:8080/board/readPage?page=2&perPageNum=10&bno=192
+	 *    ★page와 perPageNum 파라미터는 Criteria 타입의 객체로 처리함.
+	 *    ★Criteria를 확장해서 bno값을 처리하지 않고, 별도의 bno 파라미터를 사용하는 이유는
+	 *    숫자가 아닌 문자열을 처리하는 경우 다시 상속해야 하는 문제가 발생하고, Criteria는
+	 *    페이징 처리를 위해 존재하는 객체이므로, 매번 의미없는 bno등을 유지할 필요가 없음.
+	 */
+	  @RequestMapping(value = "/readPage", method = RequestMethod.GET)
+	  public void read(@RequestParam("bno") int bno, 
+			  		   @ModelAttribute("cri") Criteria cri, 
+			  		   Model model) throws Exception {
+		logger.info("readPage called......................");
+	    model.addAttribute(service.read(bno));
+	  }
+	
 
 	/*
 	 * ...225p.@RequestParam("bno")를 제외해도 bno에 값이 들어옴. 
@@ -79,6 +101,27 @@ public class BoardController {
 		logger.info("삭제처리, bno = " + bno);
 
 		return "redirect:/board/listAll";
+	}
+
+	/*
+	 * ...296p.파라미터로 Criteria를 사용해서 JSP로 page, perPageNum을 전송해서 목록 복귀.
+	 */
+	@RequestMapping(value = "/removePage", method = RequestMethod.POST)
+	public String delete(@RequestParam("bno") int bno, 
+						 Criteria cri,
+						 RedirectAttributes rttr) throws Exception {
+
+		logger.info("deletePage POST called... bno = " + bno + cri.toString());
+		
+		service.delete(bno);
+
+	    rttr.addAttribute("page", cri.getPage());
+	    rttr.addAttribute("perPageNum", cri.getPerPageNum());
+	    rttr.addFlashAttribute("msg", "SUCCESS");		
+		
+		logger.info("삭제처리, bno = " + bno);
+
+		return "redirect:/board/listPage";
 	}
 
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
@@ -97,6 +140,33 @@ public class BoardController {
 
 		return "redirect:/board/listAll";
 	}
+
+	//...298p.수정페이지로 이동.
+	@RequestMapping(value = "/modifyPage", method = RequestMethod.GET)
+	public void updatePageGET(@RequestParam("bno") int bno, 
+							    @ModelAttribute("cri") Criteria cri, 
+							    Model model) throws Exception {
+		logger.info("수정페이지로 이동, updatePage get called.../ bno = " + bno + " / cri = " + cri.toString());
+		model.addAttribute(service.read(bno));
+	}
+	
+	//...300p.수정처리.
+	@RequestMapping(value = "/modifyPage", method = RequestMethod.POST)
+	public String updatePagePOST(BoardVO board, 
+					  			Criteria cri, 
+					  			RedirectAttributes rttr) throws Exception {
+		
+	  logger.info("수정처리, updatePage post called.../ board = " + board.toString() + " / cri = " + cri.toString());
+	  
+	  service.update(board);
+	  rttr.addAttribute("page", cri.getPage());
+	  rttr.addAttribute("perPageNum", cri.getPerPageNum());
+	  rttr.addFlashAttribute("msg", "SUCCESS");
+  
+	  return "redirect:/board/listPage";
+	  
+	}  
+	
 
 	/*
 	 * ...262p. 스프링MVC의 컨트롤러는 특정 URL에 해당하는 메서드를 실행할 때, 

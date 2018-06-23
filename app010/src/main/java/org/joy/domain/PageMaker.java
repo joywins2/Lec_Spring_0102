@@ -1,5 +1,8 @@
 package org.joy.domain;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 /*
  * ...268p. 목록 하단 페이지나열자의 계산순서.
  * ...예) IF 현재 페이지가 13p THEN, 시작페이지 : 11p, 끝페이지 : 20p이 되어야 함.
@@ -113,5 +116,15 @@ public class PageMaker {
 		return "PageMaker [totalCount=" + totalCount + ", startPage=" + startPage + ", endPage=" + endPage + ", blPrev="
 				+ blPrev + ", blNext=" + blNext + ", displayPageNum=" + displayPageNum + ", cri=" + cri + "]";
 	}	
+	
+	public String makeQuery(int page) {
+
+	    UriComponents uriComponents 
+	    	= UriComponentsBuilder.newInstance()
+	    						  .queryParam("page", page)
+	    						  .queryParam("perPageNum", cri.getPerPageNum())
+	    						  .build();
+	    return uriComponents.toUriString();
+	}
 
 }
