@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.joy.domain.BoardVO;
 import org.joy.domain.Criteria;
+import org.joy.domain.PageMaker;
 import org.joy.service.IF_BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,6 +160,28 @@ public class BoardController {
 		logger.info("show list Page with Criteria......................");
 
 		model.addAttribute("list", service.listCriteria(cri));
+	}
+	
+	/*
+	 * ...275p. listPage()에서는 크게 목록 데이터를 Model에 저장하는 작업과 
+	 * ...PageMaker를 구성해서 Model에 담는 작업을 함.
+	 * ...282p. http://localhost:8080/z/zboard/listPage?page=256
+	 */
+	@RequestMapping(value = "/listPage", method = RequestMethod.GET)
+	 public void listPage(Criteria cri, Model model) throws Exception {//...275p.
+	//public void listPage(@ModelAttribute("cri") Criteria cri, Model model) throws Exception {//...281p.
+
+		logger.info(cri.toString());
+
+		model.addAttribute("list", service.listCriteria(cri));
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		//...총데이터수를 60으로 정하고, calcData()에서 보여주는 페이지수(displayPageNum)에 의해 계산됨.
+		 pageMaker.setTotalCount(60); 
+		//pageMaker.setTotalCount(service.countBno(cri));// ...281p.
+
+		model.addAttribute("pageMaker", pageMaker);
 	}
 
 
