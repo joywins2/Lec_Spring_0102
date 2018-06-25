@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.joy.dao.IF_BoardDAO;
 import org.joy.domain.BoardVO;
 import org.joy.domain.Criteria;
+import org.joy.domain.SearchCriteria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -104,7 +105,7 @@ public class Junit181p_BoardDAOTest {
 	// 추가해서 원하는 URI를 생성할 때 사용함.
 	// 원하는 데이터를 계속 추가해서 처리할 수 있음.
 	// queryParam()의 경우 GET방식의 '?' 뒤에 붙는 데이터가 됨.
-	@Test
+	//@Test
 	public void testURI() throws Exception {
 
 		UriComponents uriComponents = UriComponentsBuilder.newInstance().path("/board/read").queryParam("bno", 168)
@@ -117,7 +118,7 @@ public class Junit181p_BoardDAOTest {
 
 	// ...285p.미리 경로를 지정해두고 '{module]'와 같은 경로를 'board'로
 	//    '{page}'를 'read'로 변경할 수 있다.
-	@Test
+	//@Test
 	public void testURI2() throws Exception {
 
 		UriComponents uriComponents = UriComponentsBuilder.newInstance().path("/{module}/{page}").queryParam("bno", 168)
@@ -126,5 +127,33 @@ public class Junit181p_BoardDAOTest {
 		logger.info("testURI2 : /board/read?bno=168&perPageNum=20");
 		logger.info("testURI2 : " + uriComponents.toString());
 	}
+
+
+	//...326p.log4jdbc-log4j2설정(139p, 160p)이 정상적이면 실행되는 SQL문장이 출력됨.
+	//...예) INFO : jdbc.sqltiming - select count(bno) from ztbl_board where bno > 0 
+	@Test
+	public void testDynamic1() throws Exception {
+
+		logger.info("...S.testDynamic1");
+	    SearchCriteria cri = new SearchCriteria();
+	    cri.setPage(1);
+	    cri.setKeyword("글");
+	    cri.setSearchType("t");
+
+	    logger.info("=====================================");
+
+	    List<BoardVO> list = dao.listSearch(cri);
+
+	    for (BoardVO boardVO : list) {
+	      logger.info("testDynamic1 : " + boardVO.getBno() + ": " + boardVO.getTitle());
+	    }
+
+	    logger.info("=====================================");
+
+	    logger.info("COUNT: " + dao.listSearchCount(cri));
+	    
+	    logger.info("...E.testDynamic1");
+	}
+	
 
 }

@@ -31,12 +31,14 @@ public class SearchBoardController {
 
 	    logger.info("list is called... cri = " + cri.toString());
 
-	    model.addAttribute("list", service.listCriteria(cri));//...261p.
+	    //model.addAttribute("list", service.listCriteria(cri));//...261p.
+	    model.addAttribute("list", service.listSearchCriteria(cri)); //...332p.
 
 	    PageMaker pageMaker = new PageMaker();
 	    pageMaker.setCri(cri);
 
-	    pageMaker.setTotalCount(service.countBno(cri));//...280p.service.countBno(cri)
+	    //pageMaker.setTotalCount(service.countBno(cri));//...280p.service.countBno(cri)
+	    pageMaker.setTotalCount(service.listSearchCount(cri));//...332p.
 
 	    model.addAttribute("pageMaker", pageMaker);
 	    

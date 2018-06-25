@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joy.domain.BoardVO;
 import org.joy.domain.Criteria;
+import org.joy.domain.SearchCriteria;
 
 /***
  * ...176p. DAO = Persistence 패키지.
@@ -29,5 +30,12 @@ public interface IF_BoardDAO {
 	public List<BoardVO> listCriteria(Criteria cri) throws Exception;
 
 	public int countBno(Criteria cri) throws Exception;
+	
+	//...323p.
+	//...S.use for dynamic sql	  
+	public List<BoardVO> listSearch(SearchCriteria cri)throws Exception;
+	  
+	public int listSearchCount(SearchCriteria cri)throws Exception;
+	//...E.use for dynamic sql	
 
 }

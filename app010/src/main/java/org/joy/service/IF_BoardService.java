@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joy.domain.BoardVO;
 import org.joy.domain.Criteria;
+import org.joy.domain.SearchCriteria;
 
 //...185p.비즈니스영역(서비스)은 컨트롤러와 DAO사이의 접착제 역할.
 //...1. 고객마다 다른 부분을 처리할 수 있는 완충역할을 함.
@@ -27,5 +28,12 @@ public interface IF_BoardService {
 	  public List<BoardVO> listCriteria(Criteria cri) throws Exception;
 	  
 	  public int countBno(Criteria cri) throws Exception;
+
+	  //...331p.
+	  public List<BoardVO> listSearchCriteria(SearchCriteria cri) 
+	      throws Exception;
+
+	  public int listSearchCount(SearchCriteria cri) throws Exception;
+	  
 
 }

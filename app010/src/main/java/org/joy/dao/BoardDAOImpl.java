@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.joy.domain.BoardVO;
 import org.joy.domain.Criteria;
+import org.joy.domain.SearchCriteria;
 import org.springframework.stereotype.Repository;
 
 /*
@@ -106,6 +107,16 @@ public class BoardDAOImpl implements IF_BoardDAO {
 	@Override
 	public int countBno(Criteria cri) throws Exception {
 	    return session.selectOne(namespace + ".countBno", cri);
+	}
+
+	@Override
+	public List<BoardVO> listSearch(SearchCriteria cri) throws Exception {
+		return session.selectList(namespace + ".listSearch2", cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) throws Exception {
+		return session.selectOne(namespace + ".listSearchCount2", cri);
 	}
 
 }

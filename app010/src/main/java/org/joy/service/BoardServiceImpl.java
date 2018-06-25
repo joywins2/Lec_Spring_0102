@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.joy.dao.IF_BoardDAO;
 import org.joy.domain.BoardVO;
 import org.joy.domain.Criteria;
+import org.joy.domain.SearchCriteria;
 import org.springframework.stereotype.Service;
 
 
@@ -57,6 +58,17 @@ public class BoardServiceImpl implements IF_BoardService {
 	@Override
 	public int countBno(Criteria cri) throws Exception {
 		return dao.countBno(cri);
+	}
+
+	//...331p.
+	@Override
+	public List<BoardVO> listSearchCriteria(SearchCriteria cri) throws Exception {
+		return dao.listSearch(cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) throws Exception {
+		return dao.listSearchCount(cri);
 	}
 
 }
