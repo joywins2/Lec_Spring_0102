@@ -14,6 +14,60 @@
 		<!-- left column -->
 		<div class="col-md-12">
 			<!-- general form elements -->
+			<div class='box'>
+				<div class="box-header with-border">
+					<h3 class="box-title">Board List</h3>
+				</div>
+				<div class='box-body'>
+					<!-- 
+						...310p.
+						value / 의미
+						n / 검색조건 없음.
+						t / 제목으로 검색.
+						c / 내용으로 검색.
+						w / 작성자로 검색.
+						tc / 제목 or 내용으로 검색.
+						cw / 내용 or 작성자로 검색.
+						tcw / 제목 or 내용 or 작성자로 검색. 
+					-->
+					<select name="searchType">
+						<option value="n"
+							<c:out value="${cri.searchType == null?'selected':''}"/>>
+							---
+						</option>
+						<option value="t"
+							<c:out value="${cri.searchType eq 't'?'selected':''}"/>>
+							Title
+						</option>
+						<option value="c"
+							<c:out value="${cri.searchType eq 'c'?'selected':''}"/>>
+							Content
+						</option>
+						<option value="w"
+							<c:out value="${cri.searchType eq 'w'?'selected':''}"/>>
+							Writer
+						</option>
+						<option value="tc"
+							<c:out value="${cri.searchType eq 'tc'?'selected':''}"/>>
+							Title OR Content
+						</option>
+						<option value="cw"
+							<c:out value="${cri.searchType eq 'cw'?'selected':''}"/>>
+							Content OR Writer
+						</option>
+						<option value="tcw"
+							<c:out value="${cri.searchType eq 'tcw'?'selected':''}"/>>
+							Title OR Content OR Writer
+						</option>
+					</select>
+					
+					<input type="text" name='keyword' id="keywordInput"
+										value='${cri.keyword }'>
+					<button id='searchBtn'>Search</button>
+					<button id='newBtn'>New Board</button>
+
+				</div>
+			</div>
 
 			<div class="box">
 				<div class="box-header with-border">
@@ -46,13 +100,15 @@
 						<tr>
 							<td>${boardVO.bno}</td>
 								<!-- 
-								...216p.↓.
-								...http://localhost:8080/board/listPage?page=256
-								<td><a href='/board/read?bno=${boardVO.bno}'>${boardVO.title}</a></td>
-								...286p.↓.페이지정보를 유지하게 함.
-								...http://localhost:8080/board/listPage?page=19&perPageNum=10로 호출가능.
+								<td>
+									<a href='/board/readPage${pageMaker.makeQuery(pageMaker.cri.page)}&bno=${boardVO.bno}'>
+										${boardVO.title}
+									</a>
+								</td>
+								...317p.								
 								 -->
-								<td><a href='/board/readPage${pageMaker.makeQuery(pageMaker.cri.page)}&bno=${boardVO.bno}'>
+								<td>								
+									<a href='/sboard/readPage${pageMaker.makeSearch(pageMaker.cri.page)}&bno=${boardVO.bno}'>
 										${boardVO.title}
 									</a>
 								</td>
@@ -84,10 +140,12 @@
 									...288p.↓.페이지정보를 유지하게 함.
 									...★'?page='가 필요없음에 주의할 것.
 									<a href="/board/listPage?page=?page=250&perPageNum=10">&laquo;</a>									
-									<a href="/board/listPage?page=${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a>
-								 -->
 									<a href="/board/listPage${pageMaker.makeQuery(pageMaker.startPage - 1)}">&laquo;</a>
-									<!-- startPage : ${pageMaker.makeQuery(pageMaker.startPage - 1)} -->
+									...313p.↓.
+									http://localhost:8080/z/zsboard/listPage 실행시
+									전달된 데이터가 없으므로 'searchType&keyword'와 같이 값이 없는 형태로 링크가 작성됨.	
+								 -->
+									<a href="/sboard/list${pageMaker.makeSearch(pageMaker.startPage - 1) }">&laquo;</a>
 								</li>
 							</c:if>
 
@@ -106,8 +164,9 @@
 									...287p.↓.
 									<a href="/board/listPage?page=251&perPageNum=10">251</a>
 									<a href="/board/listPage${pageMaker.makeQuery(idx)}">${idx}</a>
+									...313p.↓.
 								 -->
-									<a href="/board/listPage${pageMaker.makeQuery(idx)}">${idx}</a>
+									<a href="/sboard/list${pageMaker.makeSearch(idx)}">${idx}</a>									
 								</li>
 							</c:forEach>
 
@@ -122,9 +181,9 @@
 									...★'?page='가 필요없음에 주의할 것.
 									<a href="/board/listPage?page=31&perPageNum=10">&raquo;</a>
 									<a href="/board/listPage${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a>
+									...313p.↓.
 								 -->								
-									<a href="/board/listPage${pageMaker.makeQuery(pageMaker.endPage + 1)}">&raquo;</a>
-									<!-- endPage : ${pageMaker.next}, ${pageMaker.endPage } -->
+									<a href="/sboard/list${pageMaker.makeSearch(pageMaker.endPage +1) }">&raquo;</a>
 								</li>
 							</c:if>
 
@@ -160,6 +219,35 @@
     //   http://cafe.naver.com/gugucoding/2634
     //   jQuery 로 처리하려면, 페이지목록을 276p 처럼 해야 함. 
     })    
+</script>
+
+<!-- 
+	...319p.PageMaker.makeQuery()를 이용해서 처리함 : makeQuery()는 검색 조건이 없는 상황에서 사용하는 메서드임.
+	...즉, 검색조건이 없는 링크를 생성하고, 필요한 링크를 뒤에 연결시키는 방식임.
+ -->
+<script>
+	$(document).ready(
+			function() {
+
+				$('#searchBtn').on(
+						"click",
+						function(event) {
+
+							self.location = "list"
+									+ '${pageMaker.makeQuery(1)}'
+									+ "&searchType="
+									+ $("select option:selected").val()
+									+ "&keyword=" + $('#keywordInput').val();
+
+						});
+
+				$('#newBtn').on("click", function(evt) {
+
+					self.location = "insert";
+
+				});
+
+			});
 </script>
 
 <%@include file="../include/footer.jsp"%>

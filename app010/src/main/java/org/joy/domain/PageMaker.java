@@ -117,6 +117,9 @@ public class PageMaker {
 				+ blPrev + ", blNext=" + blNext + ", displayPageNum=" + displayPageNum + ", cri=" + cri + "]";
 	}	
 	
+
+	//...319p.PageMaker.makeQuery()를 이용해서 처리함 : makeQuery()는 검색 조건이 없는 상황에서 사용하는 메서드임.
+	//...즉, 검색조건이 없는 링크를 생성하고, 필요한 링크를 뒤에 연결시키는 방식임.
 	public String makeQuery(int page) {
 
 	    UriComponents uriComponents 
@@ -126,5 +129,20 @@ public class PageMaker {
 	    						  .build();
 	    return uriComponents.toUriString();
 	}
+
+  	
+	//...312p.searchType, keyWord 링크처리.
+	public String makeSearch(int page){		    
+		
+	    UriComponents uriComponents =
+	              UriComponentsBuilder.newInstance()
+	              .queryParam("page", page)
+	              .queryParam("perPageNum", cri.getPerPageNum())
+	              .queryParam("searchType", ((SearchCriteria)cri).getSearchType())
+	              .queryParam("keyword", ((SearchCriteria)cri).getKeyword())
+	              .build();             
+	    
+	    return uriComponents.toUriString();
+	} 	
 
 }
