@@ -21,6 +21,16 @@
 
 ### app010  
 
+* ~278p.9장 listPage.jsp 구현하기  
+- ~265p.9장 listCri?page=3&perPageNum=20 으로 조회하기  
++ ~261p.8장 페이징(Criteria) 클래스 추가하기  
+* ~237p.7장 예외처리(@ControllerAdvice) 구현하기  
+- ~230p.6장 BoardController 수정 구현하기  
++ ~225p.6장 BoardController 삭제 구현하기  
+* ~223p.5장 BoardController 조회 구현하기  
+- ~217p.4장 BoardController 전체목록 구현하기  
++ ~212p.3장 BoardController 글쓰기 등록 도배방지 구현하기  
+* ~206p.3장 BoardController 글쓰기 등록구현하기  
 - ~200p.3장 BoardController 구현하기  
 + ~188p.3장 BoardServiceImpl 비즈니스(Service)계층 구현하기  
 * ~183p.2장 BoardDaoImpl Test 하기  

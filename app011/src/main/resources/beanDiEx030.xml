@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="person1" class="org.joy.diEx030.Person">
+		<constructor-arg>
+			<value>박보검</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>남</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>26</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>888888-1231545</value>
+		</constructor-arg>		
+	</bean>
+	
+	<bean id="person2" class="org.joy.diEx030.Person">
+		<constructor-arg>
+			<value>이수지</value>
+		</constructor-arg>
+		<constructor-arg value="여"/>
+		<constructor-arg value="15"/>
+		<constructor-arg value="941212-2511515"/>		
+	</bean>
+	
+	<bean id ="personInfo" class="org.joy.diEx030.PersonInfo">
+		<constructor-arg>
+			<ref bean="person1"/>
+		</constructor-arg>
+	</bean>
+</beans>
