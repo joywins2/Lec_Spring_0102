@@ -89,24 +89,5 @@ Spring 컨테이너 생명 주기.
 	종료 :
 		ctx.close();
 	
-Bean 의 생명주기 :
-	생성 :
-		ctx.refresh() 에서 생성.
-	초기화 및 소멸 처리 :
-		InitializingBean, DisposableBean 인터페이스는 따로 구현하거나 동시에 구현해도 됨.
-		InitializingBean 인터페이스.
-			구현할 메서드 :
-				public void afterPropertiesSet() throws Exception.
-				ctx.refresh() 이후 호출됨.
-		DisposableBean 인터페이스.
-			스프링 컨테이너가 소멸할 때 ctx.close() 에서 빈도 소멸됨.
-				public void destroy() throws Exception.
-		어노테이션 활용 :
-			@PostConstruct
-			public void initMethod()...
-			
-			@PreDestroy
-			public void destroy()...
-	
 	
 */

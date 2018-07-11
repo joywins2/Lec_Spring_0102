@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<!-- @ 사용시 필요함. -->
+	<context:annotation-config/>
+	
+	<bean id="player1" class="org.joy.beanLifeEx010.Player">
+		<constructor-arg value="강정호"/>
+		<constructor-arg value="28"/>
+	</bean>
+	
+	<bean id="player2" class="org.joy.beanLifeEx010.Player2">
+		<constructor-arg value="박병호"/>
+		<constructor-arg value="28"/>
+	</bean>
+</beans>
