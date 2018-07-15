@@ -21,6 +21,12 @@
 
 ### app010  
 
+* ~344p.10장 동적SQL 로 검색조건 조회, 수정, 삭제 처리하기   
+- ~333p.10장 동적SQL 로 검색조건 처리하기   
++ ~320p.10장 list.page 검색버튼 추가와 링크 수정하기   
+* ~309p.10장 검색을 위한 SearchBoardController 작성   
+- ~301p.9장 수정 및 삭제후 원래 보던 목록으로 이동하기   
++ ~282p.9.5장 페이징을 위한 SQL 문 처리하기 
 * ~278p.9장 listPage.jsp 구현하기  
 - ~265p.9장 listCri?page=3&perPageNum=20 으로 조회하기  
 + ~261p.8장 페이징(Criteria) 클래스 추가하기  
@@ -36,6 +42,15 @@
 * ~183p.2장 BoardDaoImpl Test 하기  
 - ~171p.1장 app010 Bootstrap 사용하기   
 
+### app011  
+
+- Spring DI 에 관하여   
+
+### app012  
+
++ Bean 설정 : Environment, xml, properties, Profile 이용   
+* Bean 의 Lifecycle에 대하여   
+
 
 ## Practised sources from a book ['코드로 배우는 스프링 웹프로젝트 중 Part01.Ch5.모델2방식과 스프링MVC 까지 반영한 실습소스'](http://book.naver.com/bookdb/book_detail.nhn?bid=9425458 "a book on Springframework3 and REST Ajax, and I will convert this source into a new one with React.js" ) and the authors' cafe : [Cafe run by Author of this book](http://cafe.naver.com/gugucoding "Cafe run by Author of this book" )  
 
@@ -45,7 +60,7 @@
 정확한 내용은 위의 저자의 링크를 참조하시기 바람.  
 
 ---
-React.js 와 Java Spring 을 사용해서 뭔가 공익적인 측면에 도움이 될 수 있는 것을
+Vue.js 와 Java Spring 을 사용해서 뭔가 공익적인 측면에 도움이 될 수 있는 것을
 함께 만드실 분을 찾음.
 
 I hope to make something good to make our society better.  
