@@ -5,7 +5,7 @@ public class ReflectionTest3 {
 	public static void main(String[] args) throws ClassNotFoundException
 	{
 		// 클래스 정보를 가져온다.
-		Class<?> cls = Class.forName("exem.java33.MyClass1");
+		Class<?> cls = Class.forName("exem.java33.reflection.MyClass1");
 
 		// 메소드의 이름 출력.
 		Method[] methods = cls.getDeclaredMethods();

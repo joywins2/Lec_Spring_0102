@@ -20,7 +20,7 @@ public class MainBaseBall {
 		System.out.println("나이 :"+player1.getAge());
 		System.out.println("포지션 :"+player1.getPosition());
 		System.out.println("신장 :"+player1.getHeight());
-		System.out.println("몸뭄게 :"+player1.getWeight());
+		System.out.println("몸무게 :"+player1.getWeight());
 		
 		System.out.println("=============================");
 		
@@ -29,7 +29,7 @@ public class MainBaseBall {
 		System.out.println("나이 :"+player2.getAge());
 		System.out.println("포지션 :"+player2.getPosition());
 		System.out.println("신장 :"+player2.getHeight());
-		System.out.println("몸뭄게 :"+player2.getWeight());
+		System.out.println("몸무게 :"+player2.getWeight());
 		
 		ctx.close();
 	}

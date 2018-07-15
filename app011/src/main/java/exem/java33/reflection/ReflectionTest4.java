@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 public class ReflectionTest4 {
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException
 	{
-		Class<?> cls = Class.forName("exem.java33.MyClass1");
+		Class<?> cls = Class.forName("exem.java33.reflection.MyClass1");
 		Object obj = cls.newInstance();
 		
 		// 인자없는 메소드 가져와서 호출하기

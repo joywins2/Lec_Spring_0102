@@ -7,7 +7,7 @@
 	...singletone(같은객체) vs prototype(새로운객체).
 	<bean id="person" class="org.joy.beanLifeEx020.Person" scope="singleton"> 
 	 -->
-	<bean id="person" class="org.joy.beanLifeEx020.Person" scope="prototype">
+	<bean id="person" class="org.joy.beanLifeEx020.Person" scope="singleton">
 		<constructor-arg value="김병만" />
 		<constructor-arg value="28" />
 	</bean>
