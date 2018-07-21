@@ -62,7 +62,9 @@ public class SearchBoardController {
 	  public String delete(@RequestParam("bno") int bno, 
 			  				SearchCriteria cri, 
 			  				RedirectAttributes rttr) throws Exception {
+		  
 		logger.info("removePage called... bno = " + bno + " // cri = " + cri.toString());
+		
 	    service.delete(bno);
 
 	    rttr.addAttribute("page", cri.getPage());
@@ -80,8 +82,11 @@ public class SearchBoardController {
 	  public void modifyPageGET(int bno, 
 			  					@ModelAttribute("cri") SearchCriteria cri, 
 			  					Model model) throws Exception {
+		  
 		logger.info("updatePage GET called... bno = " + bno + " // cri = " + cri.toString() + " // model = " + model.toString());
+		
 	    model.addAttribute(service.read(bno));
+	    
 	  }  
 
 	  @RequestMapping(value = "/modifyPage", method = RequestMethod.POST)
@@ -90,6 +95,7 @@ public class SearchBoardController {
 			  						RedirectAttributes rttr) throws Exception {
 
 	    logger.info("modifyPagePOST called... board = " + board.toString() + " // cri = " + cri.toString());
+	    
 	    service.update(board);
 
 	    rttr.addAttribute("page", cri.getPage());
@@ -109,6 +115,7 @@ public class SearchBoardController {
 	  public void registerGET() throws Exception {
 
 	    logger.info("create get ...........");
+	    
 	  }  
 	  
 	  @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -123,6 +130,8 @@ public class SearchBoardController {
 	    return "redirect:/sboard/list";
 	  }
 
-
-
 }
+
+
+
+

@@ -31,8 +31,9 @@
 				    perPageNum = ${cri.perPageNum}
 				<!-- ...335p. -->
 				    <input type='hidden' name='searchType' value="${cri.searchType}">
+				    searchTeype = ${cri.searchType}
 					<input type='hidden' name='keyword' value="${cri.keyword}">
-					
+					keyword = ${cri.keyword}
 				</form>			
 				
 				<div class="box-body">

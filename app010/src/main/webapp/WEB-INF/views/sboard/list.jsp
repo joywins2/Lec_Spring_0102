@@ -243,7 +243,7 @@
 
 				$('#newBtn').on("click", function(evt) {
 
-					self.location = "insert";
+					self.location = "create";
 
 				});
 

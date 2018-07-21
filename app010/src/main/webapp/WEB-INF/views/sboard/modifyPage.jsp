@@ -75,12 +75,11 @@
 						var formObj = $("form[role='form']");
 						console.log(formObj);
 						//...338p. 취소버튼을 클릭하면 원래 목록 페이지로 이동하게 함.
-						$(".btn-warning")
-								.on("click",
-									function() {
-										self.location = "/sboard/list?page=${cri.page}&perPageNum=${cri.perPageNum}"
-														+ "&searchType=${cri.searchType}&keyword=${cri.keyword}";
-									});
+						$(".btn-warning").on("click",
+							function() {
+								self.location = "/sboard/list?page=${cri.page}&perPageNum=${cri.perPageNum}"
+												+ "&searchType=${cri.searchType}&keyword=${cri.keyword}";
+						});
 						$(".btn-primary").on("click", function() {
 							formObj.submit();
 						});
