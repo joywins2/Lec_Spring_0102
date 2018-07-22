@@ -40,7 +40,7 @@ public class SampleController {
 	 * ...349p.단순문자열.
 	 * ...@RestController에서 문자열 데이터는 기본적으로 브라우저에는 'text/html' 타입으로 처리됨.
 	 * ...반환되는 문자열은 JSP 경로가 아닌 일반 문자열임. 
-	 * ...http://localhost:8080/z2/rsample/simpleString
+	 * ...http://localhost:8080/rsample/sendString
 	 */
 	@RequestMapping("/sendString")
 	public String sendString() {
@@ -48,7 +48,7 @@ public class SampleController {
 	}
 	
 	/*
-	 * ...354p. http://localhost:8080/z2/rsample/sendVO 실행시 '406 Not Acceptable' 에러 발생함.
+	 * ...354p. http://localhost:8080/rsample/sendJson 실행시 '406 Not Acceptable' 에러 발생함.
 	 * ...스프링에서 객체의 변환에 실패했기 때문임.
 	 * ...스프링에 jackson-databind 라이브러리를 pom.xml에 추가하여 해결함.
 	 * ...서버재시작후 일반브라우저로 확인한 결과 :  {"mno":123,"firstName":"길동","lastName":"홍"}
@@ -66,7 +66,9 @@ public class SampleController {
 
 	/*
 	 * ...356p. List타입 → JSON 문법상 배열로 표현됨.
+	 * 				http://localhost:8080/rsample/sendList
 	 * ...      Map타입  → JSON 문법상 <키, 값> 조합으로 표현됨.
+	 * 				http://localhost:8080/rsample/sendMap
 	 */
 	@RequestMapping("/sendList")
 	public List<SampleVO> sendList() {
@@ -123,9 +125,10 @@ public class SampleController {
 	 *       504  : 지정된 처리시간이 지나서 처리되지 못함.
 	 *       
 	 * ...스프링에서 제공되는 ResponseEntity타입은 개발자가 직접 결과 데이터 + HTTP의 상태코드를
-	 * ...직접 제어할 수 있는 클래스임.
+	 *    직접 제어할 수 있는 클래스임.
 	 * ...ResponseEntity를 이용하면 개발자는 404 or 500같은 HTTP상태 코드를 전송하고 싶은 데이터와
-	 * ...함께 전송할 수 있기 대문에 좀 더 세밀한 제어가 필요한 경우 사용할 수 있음.
+	 *    함께 전송할 수 있기 대문에 좀 더 세밀한 제어가 필요한 경우 사용할 수 있음.
+	 *    http://localhost:8080/rsample/sendHttpStatusError
 	 *  
 	 */
 	@RequestMapping("/sendHttpStatusError")
@@ -137,11 +140,12 @@ public class SampleController {
 
 	/*
 	 * ...361p.결과 데이터와 HTTP 상태 코드를 같이 사용하는 경우.
-	 * ...주로 호출한 쪽으로 에러의 원인 메시지를 전송할 때 사용함.
+	 *    주로 호출한 쪽으로 에러의 원인 메시지를 전송할 때 사용함.
 	 * ...@RestController를 이용해서 결과 데이터만을 서버에서 제공하는 방식은
-	 * ...데이터를 이용하는 클라이언트측에서 기능이 많아지는 경우 사용함.
-	 * ...예) Android, iPhone 등의 모바일 환경 : 서버의 데이터를 이용함.
-	 * ...    HTML5, Ajax 등을 이용한 경우 많이 사용함.
+	 *    데이터를 이용하는 클라이언트측에서 기능이 많아지는 경우 사용함.
+	 *    예) Android, iPhone 등의 모바일 환경 : 서버의 데이터를 이용함.
+	 *        HTML5, Ajax 등을 이용한 경우 많이 사용함.
+	 *    http://localhost:8080/rsample/sendHttpStatusErrorInfo
 	 */
 	@RequestMapping("/sendHttpStatusErrorInfo")
 	public ResponseEntity<List<SampleVO>> sendListNot() {

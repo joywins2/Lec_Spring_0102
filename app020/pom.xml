@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
-		<java-version>1.8</java-version>
+		<java-version>1.8</java-version><!-- ...42, 73p. -->
 		<org.springframework-version>4.3.8.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
@@ -32,7 +32,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-				
+		
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -91,15 +91,15 @@
 		</dependency>
 				
 		<!-- Servlet -->
-		<!-- 
-		변경전 :
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>		
-		변경후 :
+		<!--				
+			...119p.스프링3.2부터는 jUnit만을 사용해서 컨트롤러를 테스트할 수 있는데,
+			   spring-test모듈을 사용할 때 가능하면 WAS의 Servlet스펙 버전을 일치시켜서 테스트할 것.
+			   테스트코드작성은 test폴더를 이용해서 작업하고, WAS를 실행하지 않고 컨트롤러를
+			   테스트하려면 pom.xml의 servlet버전을 높여줘야만 가능함.
+			...Caused by: java.lang.ClassNotFoundException: javax.servlet.SessionCookieConfig
+			   https://stackoverflow.com/questions/21561432/failed-to-load-applicationcontext-during-spring-unit-test
+			...Caused by: java.lang.ClassNotFoundException: javax.servlet.SessionCookieConfig
+			   http://www.cnblogs.com/canger/p/7875546.html
 		 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -127,7 +127,7 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
-		</dependency>  
+		</dependency>
 
 		<!-- ...72p.156p.mySql -->
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -196,8 +196,9 @@
 			<artifactId>log4jdbc-log4j2-jdbc4</artifactId>
 			<version>1.16</version>
 		</dependency>
-		            
+		        
 	</dependencies>
+	
     <build>
         <plugins>
             <plugin>
