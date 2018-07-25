@@ -66,14 +66,15 @@ public class ReplyController {
 
 	/*
 	 * ...377p.REST 방식 처리에 사용하는 특별한 어노테이션.
-	 * ...@PathVariable : URI의 경로에서 원하는 데이터를 추출함.
-	 * ...@RequestBody : 전송된 JSON데이터를 객체로 변환해주는 어노테이션으로
-	 * ...@ModelAttribute와 유사한 역할을 하지만 JSON에서 사용된다는 차이가 있음.
+	 *    @PathVariable : URI의 경로에서 원하는 데이터를 추출함.
+	 *    @RequestBody : 전송된 JSON데이터를 객체로 변환해주는 어노테이션으로
+	 *                   @ModelAttribute와 유사한 역할을 하지만 JSON에서 사용된다는
+	 *                   차이가 있음.
 	 * 
 	 * ...379p.
 	 * ...ResponseEntity<String>반환형을 사용하여, 댓글등록에 실패하면
-	 * ...try~ catch~ 선언처리로 예외의 원인메시지를 전송하고
-	 * ...사용자에게는 BAD_REQEUST(400)을 결과로 전송함.
+	 *    try~ catch~ 선언처리로 예외의 원인메시지를 전송하고
+	 *    사용자에게는 BAD_REQEUST(400)을 결과로 전송함.
 	 * ...데이터 전송방식은 JSON을 이용하므로 @RequestBody를 사용함.
 	 * 
 	 * ...Advanced REST Cient 이용 테스트.
@@ -134,6 +135,74 @@ public class ReplyController {
 		return entity;
 		
 	}
+
+	/*
+	 * ...384p.
+	 * ...REST방식에서 update작업은 PUT, PATCH방식을 이용해서 처리함.
+	 *    PUT : 전체 데이터를 수정하는 경우 사용.
+	 *    PATCH : 일부 데이터를 수정하는 경우 사용. 
+	 * ...@RequestMapping(value = "/{rno}", method = { RequestMethod.PUT, RequestMethod.PATCH })
+	 *    에서는 PUT, PATCH 방식 모두 사용할 수 있도록 선언되 있음.
+	 * 
+	 * ...아래 URI에서 1은 댓글번호임.
+	 * ...http://localhost:8080/replies/1
+			Content-Type: application/json
+			{
+			 "replytext" : "댓글을 수정"
+			 }
+	 *
+	 * ...387p. GET/POST방식만 지원하는 브라우저의 경우를 대비하기 위해 HiddenHttpMethodFilter를
+	 * ...web.xml에 필터 설정을 추가함.
+	 *
+	 */
+	@RequestMapping(value = "/{rno}", method = { RequestMethod.PUT, RequestMethod.PATCH })
+	public ResponseEntity<String> updateReply(@PathVariable("rno") Integer rno, 
+											  @RequestBody ReplyVO vo) {
+	
+		logger.info("update PUT/PATCH called ...........");
+		
+		ResponseEntity<String> entity = null;
+		try {
+			vo.setRno(rno);
+			service.updateReply(vo);
+			logger.info("OK... vo = " + vo.toString());
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
+		} catch (Exception e) {
+			logger.info("Error ...........");
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+		
+	}
+
+	/*
+	 * ...388p.
+	 * ...아래 URI에서 4는 댓글번호임. 
+	 * ...http://localhost:8080/replies/4
+			Content-Type: application/json
+	 */
+	@RequestMapping(value = "/{rno}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteReply(@PathVariable("rno") Integer rno) {
+	
+		logger.info("delete PUT/PATCH called ...........");
+		
+		ResponseEntity<String> entity = null;
+		
+		try {
+			service.deleteReply(rno);
+			logger.info("OK... rno = " + rno);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+			
+		} catch (Exception e) {
+			logger.info("Error ...........");
+			e.printStackTrace();
+			entity = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+
 	
 	
 }
