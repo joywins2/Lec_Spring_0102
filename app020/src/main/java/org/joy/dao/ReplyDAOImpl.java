@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.joy.domain.Criteria;
 import org.joy.domain.ReplyVO;
 import org.springframework.stereotype.Repository;
 
@@ -40,6 +41,24 @@ public class ReplyDAOImpl implements IF_ReplyDAO {
 	@Override
 	public void deleteReply(Integer rno) throws Exception {
 		session.update(namespace + ".deleteReply", rno);
+	}
+
+	//...390p.
+	@Override
+	public List<ReplyVO> selectPageReplies(Integer bno, Criteria cri) throws Exception {
+		
+	    Map<String, Object> paramMap = new HashMap<>();//...143p, 145p.
+
+	    paramMap.put("bno", bno);
+	    paramMap.put("cri", cri);
+
+	    return session.selectList(namespace + ".selectPageReplies", paramMap);
+	    
+	}
+
+	@Override
+	public int countReplies(Integer bno) throws Exception {
+		return session.selectOne(namespace + ".countReplies", bno);
 	}
 	
 }

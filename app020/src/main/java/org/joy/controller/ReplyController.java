@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.joy.domain.Criteria;
+import org.joy.domain.PageMaker;
 import org.joy.domain.ReplyVO;
 import org.joy.service.IF_ReplyService;
 import org.slf4j.Logger;
@@ -203,6 +205,59 @@ public class ReplyController {
 		return entity;
 	}
 
-	
+	/*
+	 * ...393p.두개의 @PathVariable을 이용해서 처리함.
+	 * ...'/replies/게시물번호/페이지번호' + GET방식.
+	 * ...http://localhost:8080/z2/replies/1638456/10
+			Content-Type: application/json
+	 * 
+	 * ...Ajax로 호출되므로 Model을 사용하지 못하므로,
+	 * ...전달해야하는 데이터들을 담기 위해 Map타입의 객체를 별도로 생성해야함.
+	 * ...화면으로 전달되는 Map데이터는 페이징 처리된 댓글의 목록(list)와
+	 * ...PageMaker클래스 객체(pageMaker)를 담는다.
+	 * ...게시물 페이징과 달리 댓글은 페이지당 보여주는 댓글수가 변경되는 일이
+	 * ...드물고, 10, 20, 50, 100...으로 결정해 주는 것이 일반적임.
+	 */
+	@RequestMapping(value = "/{bno}/{page}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> 
+				selectPageReplies(@PathVariable("bno") Integer bno,
+								  @PathVariable("page") Integer page) 
+	{
+		
+		logger.info("selectPageReplies GET called... bno = "+ bno + " / page = "+ page);
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		
+		try {
+			Criteria cri = new Criteria();
+			cri.setPage(page);
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<ReplyVO> list = service.selectPageReplies(bno, cri);
+			
+			map.put("list", list);
+			
+			int replyCount = service.countReplies(bno);
+			pageMaker.setTotalCount(replyCount);
+			
+			map.put("pageMaker", pageMaker);
+			
+			logger.info("OK... replyCount = " + replyCount + " / pageMaker = " + pageMaker.toString());
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}	
+		
 	
 }
+
+
+

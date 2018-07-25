@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.joy.dao.IF_ReplyDAO;
+import org.joy.domain.Criteria;
 import org.joy.domain.ReplyVO;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,17 @@ public class ReplyServiceImpl implements IF_ReplyService {
 	@Override
 	public void deleteReply(Integer rno) throws Exception {
 		dao.deleteReply(rno);
+	}
+
+	//...392p.
+	@Override
+	public List<ReplyVO> selectPageReplies(Integer bno, Criteria cri) throws Exception {
+		return dao.selectPageReplies(bno, cri);
+	}
+
+	@Override
+	public int countReplies(Integer bno) throws Exception {
+		return dao.countReplies(bno);
 	}
 
 }

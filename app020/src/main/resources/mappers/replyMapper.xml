@@ -40,6 +40,22 @@
 		 where rno =#{rno}
 	</delete>
 
+	<!-- ...390p. -->
+	<select id="selectPageReplies" resultType="ReplyVO">
+		select
+		*
+		from
+		ztbl_reply
+		where
+		bno = #{bno}
+		order by rno desc
+		limit #{cri.pageStart}, #{cri.perPageNum}
+	</select>
+	
+	<select id="countReplies" resultType="int">
+		select count(bno) from ztbl_reply where bno =#{bno}
+	</select>
+
 </mapper>  
 
 
