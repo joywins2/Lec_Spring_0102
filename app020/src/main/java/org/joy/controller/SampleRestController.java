@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/rsample")
-public class SampleController {
+public class SampleRestController {
 
 	/*
 	 * ...349p.단순문자열.
