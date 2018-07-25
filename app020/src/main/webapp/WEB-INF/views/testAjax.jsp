@@ -186,8 +186,8 @@
 						if (result == 'SUCCESS') {
 		
 							alert("등록 되었습니다.");
-							selectReplies();
-							//selectPageReplies(replyPage);
+							//selectReplies();
+							selectPageReplies(replyPage);
 		
 						}
 					}
@@ -268,8 +268,8 @@
 						if (result == 'SUCCESS') {
 							alert("삭제 되었습니다.");
 							$("#modDiv").hide("slow");
-							selectReplies();
-							//selectPageReplies(replyPage);
+							//selectReplies();
+							selectPageReplies(replyPage);
 						}
 					}
 				});
@@ -295,8 +295,8 @@
 						if(result == 'SUCCESS'){
 							alert("수정 되었습니다.");
 							 $("#modDiv").hide("slow");
-							 selectReplies();
-							 //selectPageReplies(replyPage);
+							 //selectReplies();
+							 selectPageReplies(replyPage);
 						}
 				}});
 		});	
@@ -308,6 +308,112 @@
 			$("#modDiv").hide("slow");
 	
 		});	
+
+
+
+		/* 
+		...419p.
+		...http://localhost:8080/z2/replies/1638456/1 
+		...selectPageReplies()는 페이지번호를 입력받고, jQuery의 getJSON()을
+		...이용해서 가져온 데이터를 처리함.
+		...서버에서 전송된 데이터 중 댓글 목록인 list데이터를 이용해서 댓글
+		...내용을 표시하고, 페이징 처리를 위한 pageMaker데이터를 이용해서
+		...printPaging()을 호출함.
+	 	*/
+
+		function selectPageReplies(page){
+			
+			  $.getJSON("/replies/"+bno+"/"+page , function(data){
+				  
+				  console.log(data.list.length);
+				  
+				  var str ="";
+				  
+				  $(data.list).each(function(){
+					  str+= "<li data-rno='"
+					  	 +this.rno
+					  	 +"' class='replyLi'>" 
+					  	 +this.rno
+					  	 +":"
+					  	 + this.replytext
+					  	 +"<button>MOD</button></li>";
+				  });
+				  
+				  $("#replies").html(str);
+				  
+				  printPaging(data.pageMaker);
+				  
+			  });
+			}		
+	
+
+
+		/* 
+		...420p.화면에 페이지 번호를 출력함.
+		*/
+
+		function printPaging(pageMaker){
+			
+			var str = "";
+			
+			if(pageMaker.prev){
+				str += "<li><a href='"
+					+(pageMaker.startPage-1)
+					+"'> << </a></li>";
+			}
+			
+			for(var i=pageMaker.startPage, len = pageMaker.endPage; i <= len; i++)
+			{				
+				var strClass= pageMaker.cri.page == i?'class=active':'';
+			  	str += "<li "
+			  		+strClass
+			  		+"><a href='"
+			  		+i
+			  		+"'>"
+			  		+i
+			  		+"</a></li>";
+			}
+			
+			if(pageMaker.next){
+				str += "<li><a href='"
+					+(pageMaker.endPage + 1)
+					+"'> >> </a></li>";
+			}
+			
+			$('.pagination').html(str);				
+		}	
+		
+		/*
+		...420p.JSP가 처음 동작하면 1페이지의 댓글을 가져오도록 함.
+		...같은 script태그안에 있어야 실행이 됨. 
+	 	*/
+
+		var bno = 103;
+	
+		selectPageReplies(1);	
+
+	
+		/* 
+		...422p.각 페이지 번호에 대한 클릭 이벤트처리.
+		...a 태그 내용중 페이지 번호를 추출해서 Ajax처리.
+		...event.preventDefault();는 기본적인 a href 태그의 기본 동작인 페이지 전환을 막음.
+		...화면의 이동을 막은 후, 현재 클릭된 페이지의 번호를 추출함.
+		...이 번호를 selectPageReplies() 호출함.
+		.../replies/"+bno+"/"+page, GET 방식으로 컨트롤러에 전달되어 selectPageReplies 처리.
+		...클릭되는 페이지 번호를 의미하는 replyPage는 수정, 삭제작업에 다시 목록 페이지를
+		   갱신할 때 필요한 정보이므로, 별도의 변수로 처리함.
+		*/
+		var replyPage = 1;
+	
+		$(".pagination").on("click", "li a", function(event){
+			
+			event.preventDefault();
+			
+			replyPage = $(this).attr("href");
+			
+			selectPageReplies(replyPage);
+			
+		});		
 	
 
 
