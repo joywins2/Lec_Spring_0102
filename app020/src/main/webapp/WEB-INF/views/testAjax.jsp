@@ -194,6 +194,123 @@
 			});
 		});	
 
+
+		/*
+		...405p.$.post()의 경우 일반적인 데이터 전송 방식에 적합함.
+		...아래 코드를 실행하면 415(지원되지 않는 타입)상태코드가 전송됨.
+		...이렇게 전송될 경우 RestController에서는 @RequestBody가 제대로 처리하지 못함.
+		...@RequestBody의 경우 JSON으로 전송된 데이터를 ReplyVO타입의 객체로 변환해주는
+		   역할을 하는데, 이때의 데이터는 일반적인 데이터가 아닌 JSON으로 구성된 문자열
+		   데이터임. 
+		*/
+
+		$("#postReplyBtn").on("click", function() {
+	
+			var replyer = $("#newReplyWriter").val();
+			var replytext = $("#newReplyText").val();
+			
+			alert("replyer = " + replyer + "/ replytext = " + replytext);
+			
+			$.post("/replies",
+					{replyer : replyer, replytext : replytext},				
+					function(result) {		
+						alert(result);
+					}
+			);
+		});	
+
+		
+		/*
+		...410p.댓글의 각 항목을 의미하는 li태그의 경우 Ajax 통신 후에 생기는 요소들이므로
+		   이벤트 처리를 할 때 기존에 존재하는 ul태그를 이용해서 이벤트를 등록함.
+		...이후의 이벤트는 위임(Delegation)방식으로 전달하는데, class의 속성값이
+		   'replyLI'로 된 요소 밑의 button을 찾아서 이벤트를 전달함.
+		...jQuery의 이벤트는 아직 존재하지 않는 요소에 대해 이벤트를 위임해주는
+		   편리한 기능이 있어서, 한번에 모든 목록에 대한 클릭 이벤트를 처리할 수 있음.
+	 	*/
+
+		$("#replies").on("click", ".replyLi button", function() {
+	
+			var reply = $(this).parent();
+	
+			var rno = reply.attr("data-rno");
+			var replytext = reply.text();
+			
+			//alert(rno + " : " + replytext);
+			
+			//...414p.
+			$(".modal-title").html(rno);
+			$("#replytext").val(replytext);
+			$("#modDiv").show("slow");
+	
+		});
+
+	
+	
+		// ...415p.댓글삭제작업.
+		$("#replyDelBtn").on("click", function() {
+	
+			var rno = $(".modal-title").html();
+			var replytext = $("#replytext").val();
+	
+			alert(rno + " : " + replytext);
+			
+			$.ajax({
+					type : 'delete',
+					url : '/replies/' + rno,
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "DELETE"
+					},
+					dataType : 'text',
+					success : function(result) {
+						console.log("result: " + result);
+						if (result == 'SUCCESS') {
+							alert("삭제 되었습니다.");
+							$("#modDiv").hide("slow");
+							selectReplies();
+							//selectPageReplies(replyPage);
+						}
+					}
+				});
+		});	
+	
+
+		// ...417p. 댓글수정작업.
+		$("#replyModBtn").on("click",function(){
+			  
+			  var rno = $(".modal-title").html();
+			  var replytext = $("#replytext").val();
+			  
+			  $.ajax({
+					type:'put',
+					url:'/replies/'+rno,
+					headers: { 
+					      "Content-Type": "application/json",
+					      "X-HTTP-Method-Override": "PUT" },
+					dataType:'text',					      
+					data:JSON.stringify({replytext:replytext}),
+					success:function(result){
+						console.log("result: " + result);
+						if(result == 'SUCCESS'){
+							alert("수정 되었습니다.");
+							 $("#modDiv").hide("slow");
+							 selectReplies();
+							 //selectPageReplies(replyPage);
+						}
+				}});
+		});	
+
+		$("#closeBtn").on("click", function() {
+		
+			alert("close reply box...");
+			console.log("close reply box... ");
+			$("#modDiv").hide("slow");
+	
+		});	
+	
+
+
 	
 	</script>	
 
