@@ -148,7 +148,53 @@
 						$("#replies").html(str);
 						
 					});			
-		}		
+		}	
+
+		/* 
+		...403p.jQuery를 이용하여 $.ajax()를 통해 서버를 호출함.
+		...전송하는 데이터는 JSON으로 구성된 문자열을 사용하고,
+		   전송받은 결과는 단순문자열임.
+		...특이한 점은 jQuery가 제공하는 $.post()등을 사용하지 않고,
+		   $.ajax()를 이용하여 다양한 옵션으로 구성됨. 
+		...407p.전송할때 HTTP헤더정보에 'application/json'이라고 명시함.
+		...전송되는 데이터는 JSON.stringify()를 이용해서 JSON데이터로
+		   구성해서 전송함.
+		*/
+	
+		var bno = 103;
+		
+		$("#insertReplyBtn").on("click", function() {
+			console.log("#insertReplyBtn clicked...");
+			var replyer = $("#newReplyWriter").val();
+			var replytext = $("#newReplyText").val();
+	
+			$.ajax({
+					type : 'post',
+					url : '/replies',
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST" //...385p.
+					},
+					dataType : 'text',
+					data : JSON.stringify({
+						bno : bno,
+						replyer : replyer,
+						replytext : replytext
+					}),
+					success : function(result) {
+		
+						if (result == 'SUCCESS') {
+		
+							alert("등록 되었습니다.");
+							selectReplies();
+							//selectPageReplies(replyPage);
+		
+						}
+					}
+			});
+		});	
+
+	
 	</script>	
 
 </body>
