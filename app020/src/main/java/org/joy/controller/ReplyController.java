@@ -207,16 +207,16 @@ public class ReplyController {
 
 	/*
 	 * ...393p.두개의 @PathVariable을 이용해서 처리함.
-	 * ...'/replies/게시물번호/페이지번호' + GET방식.
-	 * ...http://localhost:8080/z2/replies/1638456/10
+	 *    '/replies/게시물번호/페이지번호' + GET방식.
+	 *    http://localhost:8080/replies/103/1
 			Content-Type: application/json
 	 * 
 	 * ...Ajax로 호출되므로 Model을 사용하지 못하므로,
-	 * ...전달해야하는 데이터들을 담기 위해 Map타입의 객체를 별도로 생성해야함.
-	 * ...화면으로 전달되는 Map데이터는 페이징 처리된 댓글의 목록(list)와
-	 * ...PageMaker클래스 객체(pageMaker)를 담는다.
+	 *    전달해야하는 데이터들을 담기 위해 Map타입의 객체를 별도로 생성해야함.
+	 *    화면으로 전달되는 Map데이터는 페이징 처리된 댓글의 목록(list)과
+	 *    PageMaker클래스 객체(pageMaker)를 담는다.
 	 * ...게시물 페이징과 달리 댓글은 페이지당 보여주는 댓글수가 변경되는 일이
-	 * ...드물고, 10, 20, 50, 100...으로 결정해 주는 것이 일반적임.
+	 *    드물고, 10, 20, 50, 100...으로 결정해 주는 것이 일반적임.
 	 */
 	@RequestMapping(value = "/{bno}/{page}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> 
