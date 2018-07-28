@@ -35,7 +35,8 @@ public class ExtConfig {
 	}//Properties()
 	
 	@Bean
-	public ExternalFileEx getExtConf(){
+	public ExternalFileEx ExtConfig(){
+		//System.out.println("ExtConfig:ExtConfig...");
 		ExternalFileEx ext=new ExternalFileEx();
 		ext.setId(envId);
 		ext.setPwd(envPwd);

@@ -12,7 +12,7 @@ public class MainBaseBall {
 		AbstractApplicationContext ctx = new GenericXmlApplicationContext(confLoc, confLoc2);
 
 		System.out.println("-----------------------player1-----------------");
-		Player player1 = ctx.getBean("player1", Player.class);
+		Player player1 = ctx.getBean("player10", Player.class);
 		System.out.println(player1.getName());
 		System.out.println(player1.getPosition());
 		
