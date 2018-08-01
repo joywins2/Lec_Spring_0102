@@ -33,6 +33,10 @@
 	</logger>
 
 	<!-- Root Logger -->
+	<!-- 
+		...479p.만일 실행결과에 INFO로 시작하는 로그가 기록되지 않으면
+		...원래 warn으로 된 값을 info로 변경할 것. 
+	-->
 	<root>
 		<priority value="info" />
 		<appender-ref ref="console" />
