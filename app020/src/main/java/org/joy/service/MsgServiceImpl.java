@@ -58,9 +58,6 @@ public class MsgServiceImpl implements IF_MsgService {
 	 *      ......
 	 *    	INFO : jdbc.audit - 1. Connection.rollback() returned 로 처리됨. 
 	 * 
-	 * ...500p.
-	 *    @Transactional 의 우선순위 : 메서드 > 클래스 > 인터페이스.
-	 *    
 	 * ...488p.
 	 *    @Transactional 속성 :
 	 *    	전파(Propagation) 속성 :
