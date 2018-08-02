@@ -14,7 +14,18 @@ import java.util.Date;
 	    #,UPDATEDATE	timestamp	default	now()
 	    ,view_cnt	int default 0
 	    ,primary key(bno)
-	);   
+	); 
+	
+ * ...502p.
+	alter table ztbl_board 
+	add column reply_cnt int default 0;
+	
+ * ...507p.
+	UPDATE ztbl_board
+	SET reply_cnt = (SELECT COUNT(rno) FROM zbook_ex.ztbl_reply
+						WHERE bno = ztbl_board.bno)
+	WHERE bno > 0;
+ * 	  
  */
 
 public class BoardVO {
@@ -25,6 +36,7 @@ public class BoardVO {
 	private String writer;
 	private Date regdate;
 	private int view_count;
+	private int reply_cnt;
 	public Integer getBno() {
 		return bno;
 	}
@@ -61,10 +73,20 @@ public class BoardVO {
 	public void setView_count(int view_count) {
 		this.view_count = view_count;
 	}
+	public int getReply_cnt() {
+		return reply_cnt;
+	}
+	public void setReply_cnt(int reply_cnt) {
+		this.reply_cnt = reply_cnt;
+	}
 	@Override
 	public String toString() {
 		return "BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
-				+ regdate + ", view_count=" + view_count + "]";
-	}	
+				+ regdate + ", view_count=" + view_count + ", reply_cnt=" + reply_cnt + "]";
+	}
+	
 	
 }
+
+
+

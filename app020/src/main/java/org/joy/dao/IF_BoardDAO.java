@@ -38,4 +38,7 @@ public interface IF_BoardDAO {
 	public int listSearchCount(SearchCriteria cri)throws Exception;
 	//...E.use for dynamic sql	
 
+	//...504p.
+	public void updateReplyCount(Integer bno, int amount)throws Exception;	  
+
 }

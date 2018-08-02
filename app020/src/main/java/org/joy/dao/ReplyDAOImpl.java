@@ -60,6 +60,11 @@ public class ReplyDAOImpl implements IF_ReplyDAO {
 	public int countReplies(Integer bno) throws Exception {
 		return session.selectOne(namespace + ".countReplies", bno);
 	}
+
+	@Override
+	public int selectBno(Integer rno) throws Exception {
+		return session.selectOne(namespace + ".selectBno", rno);
+	}
 	
 }
 

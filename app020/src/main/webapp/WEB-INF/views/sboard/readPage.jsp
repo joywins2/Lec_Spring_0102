@@ -99,8 +99,13 @@
 						<!-- The time line -->
 						<ul class="timeline">
 							<!-- timeline time label -->
-							<li class="time-label" id="repliesDiv"><span
-								class="bg-green"> Replies List </span></li>
+							<li class="time-label" id="repliesDiv">
+								<span class="bg-green"> 
+									Replies List
+									<!-- ...510p.댓글목록갯수. -->  
+									<small id='reply_countSmall'> [ ${boardVO.reply_cnt} ] </small> 
+								</span>
+							</li>
 						</ul>
 
 						<div class='text-center'>
@@ -276,6 +281,13 @@
 
 			printData(data.list, $("#repliesDiv"), $('#template'));
 			printPaging(data.pageMaker, $(".pagination"));
+			
+			/*
+			...510p.
+			   댓글 삭제 이벤트 에서$("#replyDelBtn").on("click",function()
+			   다시 getPage() 할 때 댓글 갯수를 갱신시켜 줌.
+			*/
+			$("#reply_countSmall").html("[ " + data.pageMaker.totalCount +" ]");//...510p.
 
 			$("#modifyModal").modal('hide');
 

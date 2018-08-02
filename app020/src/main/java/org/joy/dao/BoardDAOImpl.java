@@ -1,6 +1,8 @@
 package org.joy.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -117,6 +119,19 @@ public class BoardDAOImpl implements IF_BoardDAO {
 	@Override
 	public int listSearchCount(SearchCriteria cri) throws Exception {
 		return session.selectOne(namespace + ".listSearchCount2", cri);
+	}
+
+	//...504p.
+	@Override
+	public void updateReplyCount(Integer bno, int amount) throws Exception {
+
+	    Map<String, Object> paramMap = new HashMap<String, Object>();
+
+	    paramMap.put("bno", bno);
+	    paramMap.put("amount", amount);
+
+	    session.update(namespace + ".updateReplyCnt", paramMap);
+		
 	}
 
 }

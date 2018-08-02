@@ -110,6 +110,8 @@
 								<td>								
 									<a href='/sboard/readPage${pageMaker.makeSearch(pageMaker.cri.page)}&bno=${boardVO.bno}'>
 										${boardVO.title}
+										<!-- ...507p.목록에서 댓글의 수를 미리 보여줌. -->
+										<strong>[ ${boardVO.reply_cnt} ]</strong>	
 									</a>
 								</td>
 							<td>${boardVO.writer}</td>

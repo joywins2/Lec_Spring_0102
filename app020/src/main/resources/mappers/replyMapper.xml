@@ -56,6 +56,12 @@
 		select count(bno) from ztbl_reply where bno =#{bno}
 	</select>
 
+	<select id="selectBno" resultType="int">
+		select bno 
+			from ztbl_reply 
+			where rno = #{rno}
+	</select>
+
 </mapper>  
 
 

@@ -27,6 +27,11 @@ public interface IF_ReplyDAO {
 
 	//...390p.페이징 처리를 하기 위해서는 반드시 해당 게시물의 댓글 수가 필요함.
 	public int countReplies(Integer bno) throws Exception;
+	
+	//...504p.댓글이 삭제될때 해당 게시물의 번호를 구함.
+	//   ReplyController를 수정해서 댓글의 번호와 게시물의 번호를 
+	//   전달받는 방식이 좋음.
+	public int selectBno(Integer rno) throws Exception;
 
 	
 }

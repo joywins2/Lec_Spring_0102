@@ -32,7 +32,7 @@
 	<!-- mybatis-config.xml::typeAlias 적용후 -->
 	<select id="select" resultType="BoardVO">
 		select
-		bno, title, content, writer, regdate, view_cnt
+		bno, title, content, writer, regdate, view_cnt, reply_cnt
 		from
 		ztbl_board
 		where bno = #{bno}
@@ -77,7 +77,7 @@
 	<select id="listCriteria" resultType="BoardVO">
 	 <![CDATA[
 	 select 
-	   bno, title, content, writer, regdate, view_cnt 
+	   bno, title, content, writer, regdate, view_cnt, reply_cnt 
 	 from 
 	   ztbl_board 
 	 where bno > 0 
@@ -209,6 +209,14 @@
 	  	<include refid="sqlWhere"></include>
 	 
 	</select>  
+	  	 
+
+	<!-- ...504p. -->
+	<update id="updateReplyCnt">
+	  update ztbl_board 
+	  	 set reply_cnt = reply_cnt + #{amount} 
+	  	 where bno = #{bno}
+	</update>
 
 
 </mapper>
