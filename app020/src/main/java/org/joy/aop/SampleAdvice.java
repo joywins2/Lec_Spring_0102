@@ -40,7 +40,7 @@ public class SampleAdvice {
    * ...481p.특정 컨트롤러를 호출할때 전달되는 파라미터를 확인하기 위해
    *    JoinPoint 타입을 사용함.
    */
-  @Before("execution(* org.joy.service.MsgService*.*(..))")
+  //@Before("execution(* org.joy.service.MsgService*.*(..))")
   public void startLog(JoinPoint jp) {
 
     logger.info("S.startLog.----------------------------");
@@ -58,7 +58,7 @@ public class SampleAdvice {
    *    @Around를 이용하는 경우 반드시 메서드의 리턴타입은 Object로 선언해야 함.
    *    @Around는 메서드를 직접 호출하고, 결과를 반환해야만 정상적인 처리가 됨. 
    */
-  @Around("execution(* org.joy.service.MsgService*.*(..))")//...495p.주석.트랜잭션.
+  //@Around("execution(* org.joy.service.MsgService*.*(..))")//...495p.주석.트랜잭션.
   public Object timeLog(ProceedingJoinPoint pjp)throws Throwable{
 	    
 	logger.info("S.timeLog.=============================================");
