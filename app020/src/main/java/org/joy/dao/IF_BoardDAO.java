@@ -40,5 +40,8 @@ public interface IF_BoardDAO {
 
 	//...504p.
 	public void updateReplyCount(Integer bno, int amount)throws Exception;	  
+	  
+	//...511p.
+	public void updateViewCount(Integer bno)throws Exception;
 
 }

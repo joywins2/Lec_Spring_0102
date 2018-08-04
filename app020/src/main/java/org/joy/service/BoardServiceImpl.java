@@ -9,6 +9,8 @@ import org.joy.domain.BoardVO;
 import org.joy.domain.Criteria;
 import org.joy.domain.SearchCriteria;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 
 //...187, 376, 470p.@Service가 스프링의 빈으로 인식하게 함. root-context.xml::Beans Graph 확인할 것.
@@ -23,8 +25,15 @@ public class BoardServiceImpl implements IF_BoardService {
 		dao.insert(board);
 	}
 
+	/*
+	 * ...512p.
+	 *    트랜잭션의 격리수준을 활용하여, 다른 연결이 
+	 *    커밋하지 않은 데이터는 볼 수 없도록 함.
+	 */
+	@Transactional(isolation=Isolation.READ_COMMITTED)
 	@Override
 	public BoardVO read(Integer bno) throws Exception {
+		dao.updateViewCount(bno);
 	    return dao.select(bno);
 	}
 

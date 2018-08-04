@@ -35,7 +35,7 @@ public class BoardVO {
 	private String content;
 	private String writer;
 	private Date regdate;
-	private int view_count;
+	private int view_cnt;
 	private int reply_cnt;
 	public Integer getBno() {
 		return bno;
@@ -67,11 +67,11 @@ public class BoardVO {
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
-	public int getView_count() {
-		return view_count;
+	public int getView_cnt() {
+		return view_cnt;
 	}
-	public void setView_count(int view_count) {
-		this.view_count = view_count;
+	public void setView_cnt(int view_cnt) {
+		this.view_cnt = view_cnt;
 	}
 	public int getReply_cnt() {
 		return reply_cnt;
@@ -82,7 +82,7 @@ public class BoardVO {
 	@Override
 	public String toString() {
 		return "BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
-				+ regdate + ", view_count=" + view_count + ", reply_cnt=" + reply_cnt + "]";
+				+ regdate + ", view_cnt=" + view_cnt + ", reply_cnt=" + reply_cnt + "]";
 	}
 	
 	

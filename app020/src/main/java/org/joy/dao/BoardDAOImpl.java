@@ -134,4 +134,9 @@ public class BoardDAOImpl implements IF_BoardDAO {
 		
 	}
 
+	@Override
+	public void updateViewCount(Integer bno) throws Exception {
+		session.update(namespace+".updateViewCnt", bno);
+	}
+
 }

@@ -218,5 +218,12 @@
 	  	 where bno = #{bno}
 	</update>
 
+	<!-- ...511p. -->
+	<update id="updateViewCnt">
+	  update ztbl_board 
+	  	 set view_cnt = view_cnt +1 
+	  	 where bno = #{bno}
+	</update>
+
 
 </mapper>
