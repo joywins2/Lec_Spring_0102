@@ -8,11 +8,14 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -73,5 +76,33 @@ public class UploadController {
 		return savedName;
 
 	}
+	
+	//...536p.
+	@RequestMapping(value = "/uploadAjax", method = RequestMethod.GET)
+	public void uploadAjax() {
+	}
+	
+	/*
+	 * ...544p.
+	 * ...@RequestMapping::produces = "text/plain;charset=UTF-8"는 한국어를 정상적으로
+	 * ...전송하기 위한 설정임.
+	 */
+	@ResponseBody
+	@RequestMapping(value ="/uploadAjax", method=RequestMethod.POST, 
+		  			produces = "text/plain;charset=UTF-8")
+	public ResponseEntity<String> uploadAjax(MultipartFile file)throws Exception{
+
+		logger.info("originalName: " + file.getOriginalFilename());
+		logger.info("size: " + file.getSize());
+		logger.info("contentType: " + file.getContentType());//...파일의 MIME타입등의 정보.
+	
+	
+		/*
+		 * ...544p.
+		 * ...HttpStatus.CREATED는 원하는 리소스가 정상적으로 생성되었다는 상태코드임.
+		 * ...HttpStatus.OK를 이용해도 무방함.
+		 */
+		return new ResponseEntity<>(file.getOriginalFilename(), HttpStatus.OK); //...559p.주석처리.
+	}	
 
 }
