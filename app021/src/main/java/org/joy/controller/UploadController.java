@@ -49,7 +49,6 @@ public class UploadController {
 		model.addAttribute("savedName", savedName);
 	
 		return "uploadResult";
-
 	}	
 	
 	//...528p.
