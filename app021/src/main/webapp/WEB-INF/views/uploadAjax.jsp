@@ -28,6 +28,9 @@
 	<script src="http://code.jquery.com/jquery-2.1.4.js"></script>
 	<script>
 		/*
+			...멀티파일업로드 자료 : https://cafe.naver.com/gugucoding/152
+		*/
+		/*
 			...538p.
 			이미지파일을 dragenter dragover drop 할 경우 기본동작을 막음.
 			event.preventDefault();을 하지 않으면 브라우저에 파일을 끌어다 놓으면
@@ -99,11 +102,85 @@
 				  */
 				  type: 'POST',
 				  success: function(data){
-					alert(data); //...569p.주석처리.
-				  }//...E.success: function(data){
+					  
+						//alert(data); //...569p.주석처리.
+						//...이미지 파일을 올리면 썸네일 이미지 또는 일반 파일명이 아래쪽에 보여짐.
+						  var str ="";
+						  if(checkImageType(data)){
+							  
+							  /*...574p.주석처리.						  	
+								str ="<div>"
+									+"<img src='displayFile?fileName=" + data + "'/></a>"
+								  	+ data 
+								  	+"</div>";						  
+							  
+								...576p.
+							  */
+								str ="<div><a href='displayFile?fileName=" + getImageLink(data) + "'>"
+							  	  +"<img src='displayFile?fileName=" + data + "'/></a>"
+							  	  + data 
+							  	  +"</div>";
+									  
+							}else{								  
+								/*...572p.주석처리.
+								str = "<div>" 
+								  + data 
+								  +"</div>";
+								  ...576p.
+								 */
+								  str = "<div><a href='displayFile?fileName="+data+"'>" 
+								  + getOriginalName(data)+"</a></div>";
+								 
+							}//...E.if(checkImageType(data)){
+
+							$(".uploadedList").append(str);
+
+					  }//...E.success: function(data){
 				});	//...E.$.ajax.	
 			
-		});//...E.$(".fileDrop").on("drop", function(event){				
+		});//...E.$(".fileDrop").on("drop", function(event){		
+		
+		//...569p.파일의 확장자가 존재하는지 검사함.
+		function checkImageType(fileName){
+			
+			//...i : 대,소문자 구분 없음.
+			var pattern = /jpg|gif|png|jpeg/i;
+			
+			return fileName.match(pattern);
+			
+		}		
+		
+		//...571p.
+		//일반 파일의 이름이 너무 길게 출력되는데 이를 줄여주는 기능을 함.
+		//첨부파일의 이름이 UUID와 첨부파일의 이름이 결합될 때 '_'가 사용되는 것을
+		//이용해서 원래의 파일 이름만을 추출함.
+		function getOriginalName(fileName){	
+
+			if(checkImageType(fileName)){
+				return;
+			}
+			
+			var idx = fileName.indexOf("_") + 1 ;
+			console.log("fileName.substr(idx) : " + fileName.substr(idx));				
+			return fileName.substr(idx);
+			
+		}	
+		
+		//...573p.
+		//첨부파일이 이미지인 경우, 썸네일이 아닌 실제 원본 이미지 데이터를 가져와야만하므로
+		//썸네일 파일명 중간에 's_'경로를 제거하면 원래의 이미지 파일이 됨.
+		function getImageLink(fileName){
+			
+			if(!checkImageType(fileName)){
+				return;
+			}
+			//...'년/월/일'경로를 추출함.
+			var front = fileName.substr(0,12);
+			//...파일 이름 앞의 's_'를 제거함.
+			var end = fileName.substr(14);
+			
+			return front + end;			
+		}				
 	</script>
 
 </body>
