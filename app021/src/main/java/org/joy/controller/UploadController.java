@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.joy.util.UploadFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -84,8 +85,10 @@ public class UploadController {
 	
 	/*
 	 * ...544p.
-	 * ...@RequestMapping::produces = "text/plain;charset=UTF-8"는 한국어를 정상적으로
-	 * ...전송하기 위한 설정임.
+	 * @RequestMapping::produces = "text/plain;charset=UTF-8"는 한국어를 정상적으로
+	 * 전송하기 위한 설정임.
+	 * https://docs.spring.io/spring-framework/docs/4.3.4.RELEASE/javadoc-api/index.html?org/springframework/web/bind/annotation/RequestMapping.html
+	 * 
 	 */
 	@ResponseBody
 	@RequestMapping(value ="/uploadAjax", method=RequestMethod.POST, 
@@ -102,7 +105,12 @@ public class UploadController {
 		 * ...HttpStatus.CREATED는 원하는 리소스가 정상적으로 생성되었다는 상태코드임.
 		 * ...HttpStatus.OK를 이용해도 무방함.
 		 */
-		return new ResponseEntity<>(file.getOriginalFilename(), HttpStatus.OK); //...559p.주석처리.
+		//return new ResponseEntity<>(file.getOriginalFilename(), HttpStatus.CREATED); //...559p.주석처리.
+	    return new ResponseEntity<>(UploadFileUtils.uploadFile(uploadPath, 
+								    	                	    file.getOriginalFilename(), 
+								    	                	    file.getBytes()), 
+	    	          				HttpStatus.CREATED);
+		
 	}	
 
 }
