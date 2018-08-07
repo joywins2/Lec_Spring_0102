@@ -192,4 +192,30 @@ public class UploadController {
 		return entity;    
 	}
 
+	/*
+	 * ...578p.
+	 * 화면에서 'ⓧ'를 선택해서 첨부파일을 삭제하면, 실제 저장 경로에서도 파일이 삭제됨.
+	 * 이미지파일은 원본파일을 먼저 삭제하고, 이후 썸네일 파일을 삭제함.
+	 */
+	@ResponseBody
+	@RequestMapping(value="/deleteFile", method=RequestMethod.POST)
+	public ResponseEntity<String> deleteFile(String fileName){
+
+		logger.info("delete file: "+ fileName);
+
+		String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
+
+		MediaType mType = MimeMediaUtils.getMediaType(formatName);
+
+		if(mType != null){
+			String front = fileName.substring(0,12);
+			String end = fileName.substring(14);
+			new File(uploadPath + (front+end).replace('/', File.separatorChar)).delete();
+		}
+
+		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+
+		return new ResponseEntity<String>("deleted", HttpStatus.OK);
+	}  
+
 }

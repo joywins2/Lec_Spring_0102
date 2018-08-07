@@ -114,22 +114,33 @@
 								  	+ data 
 								  	+"</div>";						  
 							  
-								...576p.
-							  */
+								...576p.주석처리.
 								str ="<div><a href='displayFile?fileName=" + getImageLink(data) + "'>"
 							  	  +"<img src='displayFile?fileName=" + data + "'/></a>"
 							  	  + data 
 							  	  +"</div>";
+							  	  ...576p.삭제버튼추가.
+							  */
+							  str ="<div><a href=displayFile?fileName="+getImageLink(data)+">"
+							      +"<img src='displayFile?fileName="+data+"'/></a>"
+							      +"<small data-src="+data+">ⓧ</small>"
+							  	  +"</div>";
 									  
-							}else{								  
+							}else{	
+								  
 								/*...572p.주석처리.
 								str = "<div>" 
 								  + data 
 								  +"</div>";
-								  ...576p.
-								 */
+								  ...576p.주석처리.
 								  str = "<div><a href='displayFile?fileName="+data+"'>" 
 								  + getOriginalName(data)+"</a></div>";
+								  ...576p.삭제버튼추가.
+								 */
+								str = "<div><a href='displayFile?fileName="+data+"'>" 
+								    + getOriginalName(data)+"</a>"
+								    +"<small data-src="+data+">ⓧ</small>";
+								    +"</div>";
 								 
 							}//...E.if(checkImageType(data)){
 
@@ -180,7 +191,30 @@
 			var end = fileName.substr(14);
 			
 			return front + end;			
-		}				
+		}	
+		/*
+		...579p.
+		화면에서 small태그로 된 'ⓧ' 삭제버튼을 클릭하면 'data-src'속성값으로
+		사용된 파일의 이름을 얻어와서 POST방식으로 호출함.
+		*/			
+		$(".uploadedList").on("click", "small", function(event){
+			 var that = $(this);
+			 var deletedFileName = $(this).attr("data-src");
+	
+		   $.ajax({
+			   url:"/deleteFile",
+			   type:"post",
+			   data: {fileName:$(this).attr("data-src")},
+			   dataType:"text",
+			   success:function(result){
+				   if(result == 'deleted'){
+					   that.parent("div").remove();
+					   console.log("fileName : "+deletedFileName+" deleted...");
+				   }
+			   }
+		   });
+		});//...E.$(".uploadedList").on("click", "small", function(event){		
+					
 	</script>
 
 </body>
