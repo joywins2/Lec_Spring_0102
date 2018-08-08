@@ -43,5 +43,8 @@ public interface IF_BoardDAO {
 	  
 	//...511p.
 	public void updateViewCount(Integer bno)throws Exception;
+	
+	// ...587p.
+	public void addAttach(String fullName)throws Exception;
 
 }

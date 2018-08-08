@@ -13,16 +13,29 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 
-//...187, 376, 470p.@Service가 스프링의 빈으로 인식하게 함. root-context.xml::Beans Graph 확인할 것.
+//...185, 187, 376, 470p.@Service가 스프링의 빈으로 인식하게 함. root-context.xml::Beans Graph 확인할 것.
 @Service
 public class BoardServiceImpl implements IF_BoardService {
 
 	@Inject
 	private IF_BoardDAO dao;
 
+
+	@Transactional //...588p.
 	@Override
 	public void create(BoardVO board) throws Exception {
 		dao.insert(board);
+		
+		//...588p.
+		//...먼저 게시물을 등록하는 dao.insert()를 호출한 후,
+		//...첨부파일의 이름 배열을 이용해서 각각의 파일 이름을 DB에 추가함.
+		String[] files = board.getFiles();
+
+		if(files == null) { return; } 
+
+		for (String fileName : files) {
+			dao.addAttach(fileName);
+		}  	
 	}
 
 	/*

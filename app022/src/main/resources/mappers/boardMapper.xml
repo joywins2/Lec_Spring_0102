@@ -225,5 +225,31 @@
 	  	 where bno = #{bno}
 	</update>
 
+	<!-- 
+	 * ...584p.
+		show create table ztbl_attach;
+		create table ztbl_attach (
+		  fullName varchar(150) not null,
+		  bno int not null,
+		  regdate timestamp default now(),
+		  primary key(fullName)
+		);
+		
+		alter table ztbl_attach add constraint fk_board_attach_bno
+		foreign key (bno) references ztbl_board (bno);
+	 
+	 * ...587p.
+	 * ZTBL_BOARD테이블의 설계는 게시물의 번호인 BNO컬럼이 'auto_increment'로
+	 * 설계되어서 게시물 등록시점에 게시물 번호가 생성됨.
+	 * Oracle DB의 경우, 시퀀스(sequence)를 이용하므로 시퀀스명.currval을 이용함.
+	 * MySql DB의 'auto_increment'경우는 데이터가 등록될 때 컬럼값이 생성되므로
+	 * MySql의 경우 바로 이전에 등록한 번호는 LAST_INSERT_ID()를 이용함.
+	 * 	
+	 -->
+	<insert id="addAttach">
+		insert into ztbl_attach(full_name, bno) 
+						values (#{fullName}, LAST_INSERT_ID())
+	</insert> 
+
 
 </mapper>
