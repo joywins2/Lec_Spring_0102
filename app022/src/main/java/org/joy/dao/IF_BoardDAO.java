@@ -46,5 +46,9 @@ public interface IF_BoardDAO {
 	
 	// ...587p.
 	public void addAttach(String fullName)throws Exception;
+	
+	//...598p.
+	public List<String> listAttach(Integer bno)throws Exception;  
+		
 
 }

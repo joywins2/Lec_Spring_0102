@@ -93,4 +93,9 @@ public class BoardServiceImpl implements IF_BoardService {
 		return dao.listSearchCount(cri);
 	}
 
+	@Override
+	public List<String> listAttach(Integer bno) throws Exception {
+		return dao.listAttach(bno);
+	}
+
 }

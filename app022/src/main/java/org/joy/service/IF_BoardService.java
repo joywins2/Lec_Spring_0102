@@ -34,6 +34,10 @@ public interface IF_BoardService {
 	      throws Exception;
 
 	  public int listSearchCount(SearchCriteria cri) throws Exception;
+	
+	  //...598p.
+	  public List<String> listAttach(Integer bno)throws Exception;  
+
 	  
 
 }

@@ -34,6 +34,7 @@ public class BoardDAOImpl implements IF_BoardDAO {
 	
 	//.../src/main/resources/mappers/boardMapper.xml에서 설정한 namespace 참조.	
 	private static String namespace = "org.joy.mapper.BoardMapper";
+	private static String namespace2 = "org.joy.mappers.ReplyMapper";
 
 	@Override
 	public void insert(BoardVO vo) throws Exception {
@@ -52,6 +53,7 @@ public class BoardDAOImpl implements IF_BoardDAO {
 
 	@Override
 	public void delete(Integer bno) throws Exception {
+	    session.delete(namespace2 + ".deleteReplyWithBno", bno);
 	    session.delete(namespace + ".delete", bno);
 	}
 
@@ -141,7 +143,12 @@ public class BoardDAOImpl implements IF_BoardDAO {
 
 	@Override
 	public void addAttach(String fullName) throws Exception {
-		session.insert(namespace+".addAttach", fullName);
+		session.insert(namespace+".insertAttach", fullName);
+	}
+
+	@Override
+	public List<String> listAttach(Integer bno) throws Exception {
+		return session.selectList(namespace +".listAttach", bno);
 	}
 
 }

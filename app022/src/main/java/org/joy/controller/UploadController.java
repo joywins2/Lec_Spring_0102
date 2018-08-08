@@ -210,6 +210,8 @@ public class UploadController {
 		if(mType != null){
 			String front = fileName.substring(0,12);
 			String end = fileName.substring(14);
+			String fName = (front+end).replace('/', File.separatorChar);
+			logger.info("delete file2: "+ fName);
 			new File(uploadPath + (front+end).replace('/', File.separatorChar)).delete();
 		}
 

@@ -3,10 +3,11 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page session="false"%>
 
 
 <%@include file="../include/header.jsp"%>
+
+<script type="text/javascript" src="../resources/zjs/upload.js"></script>
 <!-- ...https://cdnjs.com/libraries/handlebars.js -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
@@ -57,6 +58,12 @@
 				<!-- /.box-body -->
 
 				<div class="box-footer">
+				    
+				    <div><hr></div>
+				    
+					<%--...601p.이미 업로드된 파일들이 보여지는 영역 --%>
+				    <ul class="mailbox-attachments clearfix uploadedList"></ul>
+				    
 					<button type="submit" class="btn btn-warning" id="modifyBtn">Modify</button>
 					<button type="submit" class="btn btn-danger" id="deleteBtn">REMOVE</button>
 					<button type="submit" class="btn btn-primary" id="listBtn">LIST
@@ -165,6 +172,20 @@
 <!-- /.content-wrapper -->
 
 
+<%--...602p.이미 업로드된 첨부파일을 보여주기 위한 handlebars의 템플릿. --%>
+<script id="templateAttach" type="text/x-handlebars-template">
+<li data-src='{{fullName}}'>
+  <span class="mailbox-attachment-icon has-img">
+	<img src="{{imgsrc}}" alt="Attachment">
+  </span>
+
+  <div class="mailbox-attachment-info">
+	<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+	</span>
+  </div>
+</li>                
+</script>  
+
 
 <script>
 	$(document).ready(function() {
@@ -194,6 +215,23 @@
 			formObj.attr("action", "/sboard/list");
 			formObj.submit();
 		});
+		
+		//...S.601p.첨부파일에 대한 템플릿 처리.
+		var bno = ${boardVO.bno};
+		var template = Handlebars.compile($("#templateAttach").html());
+		
+		$.getJSON("/sboard/listAttach/"+bno, function(list){
+			$(list).each(function(){
+				
+				var fileInfo = getFileInfo(this);
+				
+				var html = template(fileInfo);
+				
+				 $(".uploadedList").append(html);
+				
+			});
+		});
+		//...E.601p.첨부파일에 대한 템플릿 처리.
 
 	});
 </script>
