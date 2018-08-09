@@ -12,6 +12,31 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
 
+<!-- 
+	...602p.
+	일반파일의 경우 컨트롤러에서 자동으로 MIME타입을 다운로드함.
+	원본 이미지의 경우, 현재 화면이 전환되면서 이미지가 보여지므로 별도 이벤트 처리가 필요함.
+	원본이미지의 경우 CSS를 이용해서 화면 맨 앞쪽으로 보여지게 처리함.
+	이미지파일명을 클릭하면 큰 크기로 보여줌.
+-->
+<style type="text/css">
+.popup {position: absolute;}
+.back { background-color: gray; opacity:0.5; width: 100%; height: 300%; overflow:hidden;  z-index:1101;}
+.front {z-index:1110; opacity:1; boarder:1px; margin: auto;}
+.show{
+		position:relative;
+		max-width: 1200px; 
+		max-height: 800px; 
+		overflow: auto;       
+	}   	
+</style>
+
+<div class='popup back' style="display:none;"></div>
+<div id="popup_front" class='popup front' style="display:none;">
+	<img id="popup_img">
+</div>
+	
+
 <!-- Main content -->
 <section class="content">
 	<div class="row">
@@ -234,6 +259,42 @@
 		//...E.601p.첨부파일에 대한 템플릿 처리.
 
 	});
+
+	/*
+	 * ...S.604p.첨부파일 이미지 클릭 이벤트로 이미지 확대해서 슬라이드로 보이기/숨기기.
+	   첨부파일이 이미지인 경우, 원본파일의 경로를 특정한 div에 img 객체로
+	   만들어서 넣은 후 해당 div를 맨 앞쪽으로 보여주게 처리함.
+	   사용자가 첨부파일의 제목을 클릭한 경우 해당파일이 이미지인지 체크하면,
+	   화면이동을 못하도록 event.preventDefault()로 막음.
+	   현재 클릭한 이미지의 경로를 id속성값이 'popup_img'인 요소에 추가함.
+	   추가된 뒤에 화면에 보이도록 jQuery.show()를 호출하고, 필요한 CSS를 추가함.
+	   첨부파일을 클릭하면 원본파일을 천천히 화면이 열리면서 보여줌.
+	   화면에 원본 이미지가 보여진 후 다시 한번 사용자가 클릭하면 이미지가 사라짐.
+	 */
+	$(".uploadedList").on("click", ".mailbox-attachment-info a", function(event){
+		
+		var fileLink = $(this).attr("href");
+		
+		if(checkImageType(fileLink)){
+			
+			event.preventDefault();
+					
+			var imgTag = $("#popup_img");
+			imgTag.attr("src", fileLink);
+			
+			console.log(imgTag.attr("src"));
+					
+			$(".popup").show('slow');
+			imgTag.addClass("show");		
+		}	
+	});
+
+	$("#popup_img").on("click", function(){
+		
+		$(".popup").hide('slow');
+		
+	});
+	// ...E.604p.첨부파일 이미지 클릭 이벤트로 이미지 확대해서 슬라이드로 보이기/숨기기.
 </script>
 
 
