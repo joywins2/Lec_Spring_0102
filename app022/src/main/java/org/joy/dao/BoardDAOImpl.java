@@ -151,4 +151,19 @@ public class BoardDAOImpl implements IF_BoardDAO {
 		return session.selectList(namespace +".listAttach", bno);
 	}
 
+	@Override
+	public void deleteAllAttach(Integer bno) throws Exception {
+		session.delete(namespace+".deleteAllAttach", bno);
+	}
+
+	@Override
+	public void replaceAttach(String fullName, Integer bno) throws Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+	    
+	    paramMap.put("bno", bno);
+	    paramMap.put("fullName", fullName);
+	    
+	    session.insert(namespace+".replaceAttach", paramMap);
+	}
+
 }

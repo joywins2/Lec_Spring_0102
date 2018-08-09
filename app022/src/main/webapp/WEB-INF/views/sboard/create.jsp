@@ -38,8 +38,7 @@
 				<!-- ...595p. 
 				     업로드된 파일의 이름을 form 태그에 포함시키는 jQuery 처리로
 				     form 태그 id 를 부여함. -->
-				<form id='registerForm'  
-				role="form" method="post">
+				<form id='registerForm' role="form" method="post">
 					<div class="box-body">
 						<div class="form-group">
 							<label for="exampleInputEmail1">Title</label> 

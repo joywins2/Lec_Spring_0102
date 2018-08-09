@@ -49,10 +49,26 @@ public class BoardServiceImpl implements IF_BoardService {
 		dao.updateViewCount(bno);
 	    return dao.select(bno);
 	}
-
+	
+	//...@Transactional 처리이유.
+	//...게시물수정 = 원래 게시물 수정 + 기존 첨부파일 목록 삭제 + 새로운 첨부파일 정보 입력. 
+	@Transactional //...608p.
 	@Override
 	public void update(BoardVO board) throws Exception {
 	    dao.update(board);
+
+		//...608p.
+		Integer bno = board.getBno();
+
+		dao.deleteAllAttach(bno);
+
+		String[] files = board.getFiles();
+
+		if(files == null) { return; } 
+
+		for (String fileName : files) {
+			dao.replaceAttach(fileName, bno);
+		}		
 	}
 
 	@Override

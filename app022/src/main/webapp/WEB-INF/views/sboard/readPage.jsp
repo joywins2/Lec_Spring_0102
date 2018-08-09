@@ -52,15 +52,17 @@
 
 				<form role="form" action="modifyPage" method="post">
 
-					<input type='hidden' name='bno' value="${boardVO.bno}"> bno
-					= ${boardVO.bno} <input type='hidden' name='page'
-						value="${cri.page}"> page = ${cri.page} <input
-						type='hidden' name='perPageNum' value="${cri.perPageNum}">
+					<input type='hidden' name='bno' value="${boardVO.bno}"> 
+					bno= ${boardVO.bno} 
+					<input type='hidden' name='page' value="${cri.page}"> 
+					page = ${cri.page} 
+					<input type='hidden' name='perPageNum' value="${cri.perPageNum}">
 					perPageNum = ${cri.perPageNum}
 					<!-- ...335p. -->
 					<input type='hidden' name='searchType' value="${cri.searchType}">
-					searchTeype = ${cri.searchType} <input type='hidden' name='keyword'
-						value="${cri.keyword}"> keyword = ${cri.keyword}
+					searchTeype = ${cri.searchType} 
+					<input type='hidden' name='keyword' value="${cri.keyword}"> 
+					keyword = ${cri.keyword}
 				</form>
 
 				<div class="box-body">

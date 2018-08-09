@@ -48,7 +48,12 @@ public interface IF_BoardDAO {
 	public void addAttach(String fullName)throws Exception;
 	
 	//...598p.
-	public List<String> listAttach(Integer bno)throws Exception;  
+	public List<String> listAttach(Integer bno)throws Exception;   
+	
+	//...606p.
+	public void deleteAllAttach(Integer bno)throws Exception;
+	  
+	public void replaceAttach(String fullName, Integer bno)throws Exception;
 		
 
 }

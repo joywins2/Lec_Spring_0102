@@ -258,5 +258,14 @@
 	select fullName from ztbl_attach where bno = #{bno} order by regdate
 	</select>
 
+	<!-- ...606p.수정화면에서는 기존 첨부파일을 모두 삭제하고 다시 업로드함. -->
+	<delete id="deleteAllAttach">
+	delete from ztbl_attach where bno = #{bno}
+	</delete>
+	
+	<insert id="replaceAttach">
+	insert into ztbl_attach(fullName, bno) values (#{fullName}, #{bno})
+	</insert>
+
 
 </mapper>
