@@ -231,6 +231,32 @@
 		//$(".btn-danger").on("click", function(){//...440p.댓글추가랑 class가 겹쳐서 주석처리함.
 		$("#deleteBtn").on("click", function() {
 			alert("Delete Button clicked...");
+			
+			//...611p.S.게시물삭제와 첨부파일삭제의 화면처리.
+			var replyCnt =  $("#reply_countSmall").html();			
+
+			if(replyCnt > 0 ){
+				alert("댓글이 달린 게시물을 삭제할 수 없습니다.");
+				return;
+			}	
+
+			/*...611p.
+			     현재 첨부파일의 이름을 배열로 작성해서, 
+			     Ajax 로 /deleteAllFiles 호출해서 첨부파일을 삭제 처리한 후,
+			     /sboard/removePage 로 DB 삭제 처리함.
+			 */
+			var arr = [];
+			$(".uploadedList li").each(function(index){
+				 arr.push($(this).attr("data-src"));
+			});
+
+			if(arr.length > 0){
+				$.post("/deleteAllFiles",{files:arr}, function(){
+					//...성공여부와 상관없이 다음 처리로 넘어감.
+				});
+			}
+			//...611p.E.게시물삭제와 첨부파일삭제의 화면처리.
+			
 			formObj.attr("action", "/sboard/removePage");
 			formObj.submit();
 		});

@@ -70,9 +70,11 @@ public class BoardServiceImpl implements IF_BoardService {
 			dao.replaceAttach(fileName, bno);
 		}		
 	}
-
+	
+	@Transactional
 	@Override
 	public void delete(Integer bno) throws Exception {
+		dao.deleteAllAttach(bno);
 	    dao.delete(bno);
 	}
 
