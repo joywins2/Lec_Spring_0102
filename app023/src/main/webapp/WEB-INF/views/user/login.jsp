@@ -70,11 +70,6 @@
     <!-- jQuery 2.1.4 -->
     <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     
-<!-- 순서에 유의 -->
-<script type="text/javascript" src="/resources/js/rsa.js"></script>
-<script type="text/javascript" src="/resources/js/jsbn.js"></script>
-<script type="text/javascript" src="/resources/js/prng4.js"></script>
-<script type="text/javascript" src="/resources/js/rng.js"></script>
     
     <!-- Bootstrap 3.3.2 JS -->
     <script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>

@@ -4,15 +4,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- ...631p. -->
-
 <mapper namespace="org.joy.mapper.UserMapper">
 
 	<select id="login" resultType="UserVO">
 		select uid, upw, uname
-		from ztbl_user
+		from
+		ztbl_user
 		where uid = #{uid} and upw = #{upw}
 	</select>
-	
+
+	<!-- ...664p. -->
+	<update id="keepLogin">
+		update ztbl_user 
+		set sessionKey = #{sessionId}, sessionLimit = #{next} 
+		where uid = #{uid}
+	</update>
+
+	<select id="checkUserWithSessionKey" resultType="UserVO">
+		select * 
+		from ztbl_user 
+		where sessionKey = #{value} 
+		and sessionlimit > now()
+	</select>
+
 </mapper>
 
 

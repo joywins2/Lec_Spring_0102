@@ -36,6 +36,25 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
        *   로그인한 후 처음 이동하고자 한 페이지로 이동하게 함.
        */
       saveDest(request);
+      
+      //...S.668p.현재 사용자의 세션에 login값이 없지만, 
+      //   쿠키 중에 loginCookie가 존재할 때 처리함.      
+      Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+      
+      if(loginCookie != null) { 
+        
+        UserVO userVO = service.checkLoginBefore(loginCookie.getValue());
+        
+        logger.info("USERVO: " + userVO);
+        
+        if(userVO != null){
+          session.setAttribute("login", userVO);
+          return true;
+        }
+        
+      }
+      //...E.668p.현재 사용자의 세션에 login값이 없지만, 
+      //   쿠키 중에 loginCookie가 존재할 때 처리함. 
 
       response.sendRedirect("/user/login");
       return false;

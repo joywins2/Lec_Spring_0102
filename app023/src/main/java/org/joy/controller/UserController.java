@@ -62,7 +62,6 @@ public class UserController {
 	System.out.println("UserController: uid : "+ dto.getUid());
 	System.out.println("UserController: upw : "+ dto.getUpw());
 	System.out.println("===============================");
-	
 	  
     UserVO vo = service.login(dto);
 
@@ -70,21 +69,55 @@ public class UserController {
     if (vo == null) {
       logger.info("loginPost faile... ");
       return;
+      
     }else {
       logger.info("vo : " + vo.toString());
-      model.addAttribute("userVO", vo);    	
+      model.addAttribute("userVO", vo);
+
+      if (dto.isUseCookie()) {
+
+        int amount = 60 * 60 * 24 * 7;
+
+        Date sessionLimit = new Date(System.currentTimeMillis() + (1000 * amount));
+
+        service.keepLogin(vo.getUid(), session.getId(), sessionLimit);
+      }      
+      
     }
 
+  }
 
-/*    if (dto.isUseCookie()) {
 
-      int amount = 60 * 60 * 24 * 7;
+  //...673p.
+  @RequestMapping(value = "/logout", method = RequestMethod.GET)
+  public String logout(HttpServletRequest request, 
+		               HttpServletResponse response, 
+		               HttpSession session) throws Exception {
 
-      Date sessionLimit = new Date(System.currentTimeMillis() + (1000 * amount));
+	  logger.info("logout.................................1");
 
-      service.keepLogin(vo.getUid(), session.getId(), sessionLimit);
-    }*/
+	  Object obj = session.getAttribute("login");
 
+	  if (obj != null) {
+	  UserVO vo = (UserVO) obj;
+	  logger.info("logout.................................2");
+	  session.removeAttribute("login");
+	  session.invalidate();
+
+	  logger.info("logout.................................3");
+	  Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+
+
+	  if (loginCookie != null) {
+	  logger.info("logout.................................4");
+	  loginCookie.setPath("/");
+	  loginCookie.setMaxAge(0);
+	  response.addCookie(loginCookie);
+	  service.keepLogin(vo.getUid(), session.getId(), new Date());
+	  }
+	  } 
+
+	  return "user/login";
   }
   
 }

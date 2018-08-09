@@ -13,12 +13,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements IF_UserService {
 
-  @Inject
-  private IF_UserDAO dao;
+	@Inject
+	private IF_UserDAO dao;
 
-  @Override
-  public UserVO login(LoginDTO dto) throws Exception {
+	@Override
+	public UserVO login(LoginDTO dto) throws Exception {
 
-    return dao.login(dto);
-  }
+		return dao.login(dto);
+	}
+
+	//...666p.
+	@Override
+	public void keepLogin(String uid, String sessionId, Date next) throws Exception {
+
+		dao.keepLogin(uid, sessionId, next);
+
+	}
+
+	@Override
+	public UserVO checkLoginBefore(String value) {
+
+		return dao.checkUserWithSessionKey(value);
+	}
 }

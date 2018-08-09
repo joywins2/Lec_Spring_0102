@@ -9,4 +9,9 @@ import org.joy.dto.LoginDTO;
 public interface IF_UserService {
 
   public UserVO login(LoginDTO dto) throws Exception;
+
+  //...665p.
+  public void keepLogin(String uid, String sessionId, Date next)throws Exception;
+  
+  public UserVO checkLoginBefore(String value);  
 }

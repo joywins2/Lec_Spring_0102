@@ -17,6 +17,14 @@ package org.joy.domain;
 	insert into ztbl_user(uid, upw, uname) values('user10', 'user10', 'Quick Silver');
 	
 	select * from ztbl_user;
+	
+	...663p.	
+	alter table ztbl_user add column 
+	  sessionkey varchar(50) not null default 'none';  
+	alter table ztbl_user 
+	  add column sessionlimit timestamp;	
+	
+	
  */
 
 public class UserVO {
