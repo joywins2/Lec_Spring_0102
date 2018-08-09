@@ -14,7 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-//...636p.
+//...636p.로그인한 사용자 정보를 postHandle()을 이용하여 HttpSession 객체에 보관 처리함.
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
   private static final String LOGIN = "login";

@@ -58,6 +58,10 @@
 	<!-- ...638p -->
 	<beans:bean id="loginInterceptor" class="org.joy.interceptor.LoginInterceptor"></beans:bean>
 	
+	<!-- ...643p. -->
+	<beans:bean id="authInterceptor" class="org.joy.interceptor.AuthInterceptor"></beans:bean>
+	
+	
 	<interceptors>
 		<interceptor>
 			<mapping path="/doA"/>
@@ -69,7 +73,14 @@
 		<interceptor>
 			<mapping path="/user/loginPost" />
 			<beans:ref bean="loginInterceptor" />
-		</interceptor>		
+		</interceptor>	
+	  
+		<!-- ...643p. -->
+		<interceptor>
+			<mapping path="/sboard/create"/>			
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+			
 	</interceptors>	
 	
 	
