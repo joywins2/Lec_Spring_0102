@@ -53,7 +53,8 @@
 						<div class="form-group">
 							<label for="exampleInputEmail1">Writer</label> 
 							<input type="text"
-								name="writer" class="form-control" placeholder="Enter Writer">
+								name="writer" class="form-control"  
+								value="${login.uid}" readonly>
 						</div>
 						<!-- ...S.590p. 첨부파일 추가영역과 업로드된 파일 보여주는 ul태그.-->	
 						<div class="form-group">

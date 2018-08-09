@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
@@ -46,7 +46,7 @@
 
 			<div class="box">
 				<div class="box-header with-border">
-					<h3 class="box-title">read Posting Page</h3>
+					<h3 class="box-title">read Posting Page by ${login}</h3>
 				</div>
 				<!-- /.box-header -->
 
@@ -91,10 +91,11 @@
 					<%--...601p.이미 업로드된 파일들이 보여지는 영역 --%>
 				    <ul class="mailbox-attachments clearfix uploadedList"></ul>
 				    
-					<button type="submit" class="btn btn-warning" id="modifyBtn">Modify</button>
-					<button type="submit" class="btn btn-danger" id="deleteBtn">REMOVE</button>
-					<button type="submit" class="btn btn-primary" id="listBtn">LIST
-						ALL</button>
+ 					<c:if test="${login.uid == boardVO.writer}">
+						<button type="submit" class="btn btn-warning" id="modifyBtn">Modify</button>
+						<button type="submit" class="btn btn-danger" id="deleteBtn">REMOVE</button>
+ 					</c:if>				    
+					<button type="submit" class="btn btn-primary" id="listBtn">List All</button>
 				</div>
 				<!-- /.box-footer-->
 
@@ -113,20 +114,29 @@
 							<div class="box-header">
 								<h3 class="box-title">ADD NEW REPLY</h3>
 							</div>
+							
 
+						  <c:if test="${not empty login}">					
 							<div class="box-body">
-								<label for="exampleInputEmail1">Writer</label> <input
-									class="form-control" type="text" placeholder="USER ID"
-									id="newReplyWriter"> <label for="exampleInputEmail1">Reply
-									Text</label> <input class="form-control" type="text"
-									placeholder="REPLY TEXT" id="newReplyText">
+								<label for="exampleInputEmail1">Writer</label> 
+								<input	class="form-control" type="text" placeholder="USER ID"
+									id="newReplyWriter" value="${login.uid }" readonly="readonly">   
+								<label for="exampleInputEmail1">Reply Text</label> 
+								<input class="form-control" type="text"	placeholder="REPLY TEXT" id="newReplyText">
 							</div>
 
 							<!-- /.box-body -->
 							<div class="box-footer">
 								<button type="button" class="btn btn-primary" id="replyAddBtn">
 									ADD REPLY</button>
-							</div>
+							</div>						  
+						  </c:if>
+						  
+						  <c:if test="${empty login}">
+						    <div class="box-body">
+						      <div><a href="javascript:goLogin();" >Login Please</a></div>
+						    </div>
+						  </c:if>	
 						</div>
 
 						<!-- ...426p. 댓글 목록과 페이징 처리에 필요한 div -->
@@ -355,10 +365,12 @@
 				{{replytext}} 
 			  </div>
 		      <div class="timeline-footer">
-		     	<a class="btn btn-primary btn-xs" 
-			       data-toggle="modal" data-target="#modifyModal">
-					Modify
-				</a>
+				{{#eqReplyer replyer }}
+		     	  <a class="btn btn-primary btn-xs" 
+			         data-toggle="modal" data-target="#modifyModal">
+					  Modify
+				  </a>
+				{{/eqReplyer}}
 		      </div>
 		  </div>			
 		</li>
@@ -372,7 +384,15 @@
 	   만일 원하는 기능이 없는 경우에는 registerHelper()를 이용해서 사용자가 새로운 기능을
 	   추가할 수 있음.
  --%>
-<script>
+<script>	
+	Handlebars.registerHelper("eqReplyer", function(replyer, block) {
+		var accum = '';
+		if (replyer == '${login.uid}') {
+			accum += block.fn();
+		}
+		return accum;
+	});
+
 	Handlebars.registerHelper("prettifyDate", function(timeValue) {
 		var dateObj = new Date(timeValue);
 		var year = dateObj.getFullYear();
@@ -577,8 +597,9 @@
 		
 	});
 
-	
-	
+	function goLogin(){
+		self.location ="/user/login";
+	}	
 </script>
 
 <%@include file="../include/footer.jsp"%>
