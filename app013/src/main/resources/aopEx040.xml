@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+	
+	<aop:aspectj-autoproxy />
+	<bean id="adviceLog" class="org.joy.aop040.AdviceLog"/>
+	
+	<bean id="student" class="org.joy.aop040.Student">
+		<property name="name" value="강길동" />
+		<property name="hakbun" value="20160103" />
+		<property name="age" value="16" />
+		<property name="grade" value="2학년"/>
+	</bean>
+	
+	<bean id="staff" class="org.joy.aop040.Staff">
+		<property name="name" value="김말똥" />
+		<property name="age" value="26" />
+		<property name="dept" value="영업부" />
+	</bean>
+
+</beans>

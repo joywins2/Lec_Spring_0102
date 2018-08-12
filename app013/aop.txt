@@ -1,0 +1,92 @@
+AOP : 관점 지향 프로그래밍.
+	핵심기능 + 부가기능을 분리.
+	기존 OOP 를 보완함.
+		핵심기능 :
+			핵심 관심 사항 (Primary Concern, Core Concern).
+			입/출금, 계좌이체...
+		부가기능 :
+			공통 관심 사항 (Cross-Cutting Concern).
+			인증, 로깅, 보안...
+			
+		비즈니스 로직(Biz Logic)은 Core + Cross-Cutting 이 될 수 있음.
+		
+	Code : Primary Concern 을 구현한 비즈니스 로직 코드.
+	Target : Core 가 구현된 객체.
+	Advice : Cross-Cutting Concern 을 구현한 코드.
+	JointPoint : Code 와 Advice 를 연결해주는 설정 정보.
+	             Advice 가 적용 가능한 지점(메서드 호출, 필드값 변경).
+	Point-cut : JointPoint 의 부분 집합으로 JointPoint의 한 부분으로서 실제 Advice 가 적용되는 지점.	
+	Weaving : Code + Advice + Point-cut 등을 조합해서 어플리케이션을 만들어 가는 과정.
+	
+	AOP(Aspect Oriented Programming) 에서 Aspect 는 Advice + Point-cut 을 함께 지칭함.
+	
+스프링의 AOP 특징 :
+	스프링은 자체적인 Proxy 기반의 AOP를 지원함.
+		Client -----> Proxy -----> Target
+		호출부        대리인       핵심기능
+		
+		Proxy 는 Advice 를 메서드의 JointPoint(시작, 끝, 양쪽)에 적용할지 결정함.
+		
+	필드값 변경과 같은 JointPoint 는 사용할 수 없고, 메서드 호출만 가능함.
+		
+	완전한 AOP 지원이 목적이 아니고, 엔터프라이즈 어플리케이션을 구현하는데
+	필요한 정도의 기능 제공을 목적으로 함.
+	
+	AOP 구현 :
+		설정파일(XML 스키마 기반)을 이용한 방법.
+		어노테이션(@AspectJ)을 이용한 방법.
+		
+XML기반의 AOP 구현 과정 :
+	의존성 설정(pom.xml)
+	<!--AOP-->	
+		<!-- AspectJ -->		
+		<dependency>
+			<groupId>aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.7.4</version>
+		</dependency>
+		
+	공통 기능 클래스 제작 : Advice 역할 클래스.
+		ex) AdviceLog 클래스.
+	
+	XML 파일에 Aspect
+	
+Advice 종류 :
+	<aop:before> : 핵심기능이 실행되기 전에 advice를 실행함.
+	<aop:after-returning> : 핵심기능이 정상적으로 실행 후에 advice를 실행함.
+	<aop:after-throwing> : 핵심기능이 exception 발생하면 advice를 실행함.
+	<aop:after> : 핵심기능이 정상적이든 exception 발생하든 무조건 실행 후에 advice를 실행함.
+	<aop:around> : 핵심기능이 실행 전/후 및 exception 발생시에 advice를 실행함.
+		
+AspectJ Pointcut 표현식 :
+	Pointcut을 지정할 때 사용하는 표현식으로 AspectJ 문법을 사용함.
+		* : 모든
+		. : 현재
+		..: 0개 이상
+		within : expression="within(org.joy.aop.*)" : 패키지 안의 모든 메서드. 
+		         or expression="execution(org.joy.aop.*)"
+		         expression="within(org.joy.aop..*)": 패키지 및 하위 패키지 안의 모든 메서드.
+		         
+		execution : ("execution(public void get*(..))") : public void 인 모든 get 메서드(인자가 0개 또는 그 이상).
+		            ("execution(* org.joy.aop.*.*())") : 패키지의 파라미터가 없는 모든 메서드.
+		            ("execution(* org.joy.aop..*.*())") : 패키지 및 하위 패키지의 파라미터가 없는 모든 메서드.
+		            
+		bean : ("bean(Student)") : Student 빈에만 적용.
+		       ("bean(*er)") : ~er로 끝나는 빈에만 적용.            
+				
+@Aspect를 이용한 AOP 구현 :
+	의존설정 : pom.xml
+	@Aspect 어노테이션 이용한 Aspect 클래스 생성.
+		@Pointcut
+		
+		@Around
+		@Before
+		@AfterReturning
+		@AfterThrowing
+		@After
+		
+	XML 파일에 <aop:aspectj-autoproxy/> 설정.	
+
+		
+		
+		

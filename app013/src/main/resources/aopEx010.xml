@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+	<bean id="adviceLog" class="org.joy.aop010.AdviceLog"/>	
+	
+	<aop:config>
+		<aop:aspect id="prof" ref="adviceLog">
+			<!-- org.joy.aop010.* 패키지의 모든 메서드를 pointcut이 됨. -->
+			<aop:pointcut id="pcMethod" expression="within(org.joy.aop010.*)"/>
+			
+			<!-- org.joy.aop010.* 패키지의 모든 메서드 중 profile 메서드를 
+			     aop:around 적용 대상으로 선택함. -->
+			<aop:around pointcut-ref ="pcMethod" method="profile"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<bean id="student" class="org.joy.aop010.Student">
+		<property name="name" value="추신수" />
+		<property name="hakbun" value="20160103" />
+		<property name="age" value="16" />
+		<property name="grade" value="2학년"/>
+	</bean>
+	
+	<bean id="staff" class="org.joy.aop010.Staff">
+		<property name="name" value="이만수" />
+		<property name="age" value="26" />
+		<property name="dept" value="영업부" />
+	</bean>	
+
+</beans>
