@@ -115,8 +115,8 @@ public class SampleController02 {
              <html>
              <head>
              <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- 
-	 */
+ 	 */
+	
 	@RequestMapping("/testKoreanPathVariable/{personName}")
 	public String testKoreanPathVariable(@PathVariable String personName, 
 			                Model model) throws UnsupportedEncodingException{
@@ -131,6 +131,45 @@ public class SampleController02 {
 			return("sample02/testKoreanPathVariable");
 			
 	}//getPerson()
+	
+	//...http://localhost:8080/web/sample02/testPathVariable/one
+	@RequestMapping("/testPathVariable/{var}")
+	public String testPathVariable(@PathVariable String var){
+		
+		String viewName = "";
+		
+		if(var.equals("one")){
+			viewName = "sample02/page01";
+			
+		}else if(var.equals("two")){
+			viewName = "sample02/page02";
+		}
+		
+		return viewName;
+	}
+	
+	/*
+	 * ...GET방식 컨트롤러
+	 *    @param key1
+	 *    @param key2  
+	 * ...http://localhost:8080/web/sample02/testGet
+	 * ...http://localhost:8080/web/sample02/testGet?key1=이수징&key2=yes
+	 */
+	@RequestMapping("/testGet")
+	public void testGet(String key1, String key2){
+		System.out.println("key1 : "+key1);
+		System.out.println("key2 : "+key2);
+	}
+	
+	//...http://localhost:8080/web/sample02/testPathVariable2/하하/이수징/좋아
+	@RequestMapping("/testPathVariable2/{key1}/{key2}/{key3}")
+	public void testPathVariable2(@PathVariable String key1,
+			                      @PathVariable String key2,
+			                      @PathVariable String key3){
+		System.out.println("key1 :"+key1);
+		System.out.println("key2 :"+key2);
+		System.out.println("key3 :"+key3);
+	}
 	
 	
 }
