@@ -134,7 +134,7 @@ public class SampleRestController {
 	@RequestMapping("/sendHttpStatusError")
 	public ResponseEntity<Void> sendListAuth() {
 
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 

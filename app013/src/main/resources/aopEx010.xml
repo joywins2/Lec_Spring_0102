@@ -16,7 +16,7 @@
 			
 			<!-- org.joy.aop010.* 패키지의 모든 메서드 중 profile 메서드를 
 			     aop:around 적용 대상으로 선택함. -->
-			<aop:around pointcut-ref ="pcMethod" method="profile"/>
+			<aop:around pointcut-ref ="pcMethod" method="profile2"/>
 		</aop:aspect>
 	</aop:config>
 	

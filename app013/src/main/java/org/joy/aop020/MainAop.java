@@ -16,5 +16,6 @@ public class MainAop {
 		
 		service.addBoard();
 		service.getBoard();
+		service.delBoard();
 	}
 }

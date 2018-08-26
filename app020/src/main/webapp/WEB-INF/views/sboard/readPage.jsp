@@ -443,7 +443,8 @@
 	$(".timeline").on("click", ".replyLi", function(event){
 		
 		var reply = $(this);
-		//console.log(reply.find('.timeline-body').text().trim());
+		console.log("reply : ", reply);
+		console.log("reply2 : ", reply.find('.timeline-body').text().trim());
 		//...핸들바템플릿에서 댓글본문, 댓글번호.
 		$("#replytext").val(reply.find('.timeline-body').text().trim());
 		$(".modal-title").html(reply.attr("data-rno"));

@@ -236,7 +236,7 @@
 			var rno = reply.attr("data-rno");
 			var replytext = reply.text();
 			
-			//alert(rno + " : " + replytext);
+			alert(rno + " : " + replytext);
 			
 			//...414p.
 			$(".modal-title").html(rno);
