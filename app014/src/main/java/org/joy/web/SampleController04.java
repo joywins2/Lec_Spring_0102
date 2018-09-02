@@ -59,8 +59,14 @@ public class SampleController04 {
 		return "sample04/inputMdaUserVO";
 	}
 	
+	/*
+	 * .../userInfoPost경로를 처리하는 userInfoPost 메서드 이전에
+	 *    @ModelAttribute("mdaUserVO") UserVO userVO를 처리하는 
+	 *    mdaUserVO 메서드부터 먼저 실행하고 userInfoPost 메서드를 처리함.
+	 */
 	@RequestMapping(value="/userInfoPost", method=RequestMethod.POST)
-	public ModelAndView userSave(@ModelAttribute("userVo") UserVO userVO, Model model){
+	public ModelAndView userInfoPost(@ModelAttribute("mdaUserVO") UserVO userVO, 
+			                     Model model){
 		System.out.println("-----userSave--------------");
 		System.out.println("user : "+userVO.toString());
 		
