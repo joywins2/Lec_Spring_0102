@@ -13,7 +13,7 @@
 	<h2>개인 정보 입력 POST</h2>
 	<hr width="400" color="red"/>
 	
-	<form action="person" method="POST">
+	<form action="personInfoPOST" method="POST">
 		이름 : <input type="text" name="name"/><br/>
 		아이디 : <input type="text" name="id" /><br/>
 		<input type="submit" value="전송"/>

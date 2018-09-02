@@ -2,28 +2,31 @@ package org.joy.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.joy.domain.Person2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 @RequestMapping("/sample03/*")
 public class SampleController03 {
 	
-	@RequestMapping("/inputGET")
+	@RequestMapping("/inputPersonGET")
 	public String inputGET(){
-		return "sample03/inputFormGET";
+		return "sample03/inputPersonGET";
 	}
 	
-	@RequestMapping("/inputPOST")
+	@RequestMapping("/inputPersonPOST")
 	public String inputPOST(){
-		return "sample03/inputFormPOST";
+		return "sample03/inputPersonPOST";
 	}
 	
 	
-	@RequestMapping(value="/person", method=RequestMethod.GET)
+	@RequestMapping(value="/personInfoGET", method=RequestMethod.GET)
 	public String person(HttpServletRequest request, Model model){
 		
 		String name = request.getParameter("name");
@@ -52,10 +55,11 @@ public class SampleController03 {
 //		model.addAttribute("id", id);
 //		
 //		return "sample03/personInfoPOST";
-//	}//goPerson()
+//	}
+	
 	
 	//...GET 방식의 person 메서드가 있으므로 매개변수 조정한 오버로딩 사용.
-	@RequestMapping(value="/person", method=RequestMethod.POST)
+	@RequestMapping(value="/personInfoPOST", method=RequestMethod.POST)
 	public ModelAndView person(HttpServletRequest request){
 		
 		String name = request.getParameter("name");
@@ -74,6 +78,6 @@ public class SampleController03 {
 //		model.addAttribute("id", id);
 		
 		return modelView;
-	}//goPerson()
+	}	
 	
 }

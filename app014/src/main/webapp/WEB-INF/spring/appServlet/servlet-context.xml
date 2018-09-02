@@ -21,7 +21,16 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="org.joy.web" />
+	
+	<context:component-scan base-package="org.joy" /> 
+	<!--
+		<context:component-scan base-package="org.joy.web" />
+		<context:component-scan base-package="org.joy.web2" />
+	
+		STS :: Tomcat :: server.xml	
+		<Context docBase="app014" path="/web" reloadable="true" source="org.eclipse.jst.jee.server:app014"/>
+    	<Context docBase="app014" path="/web2" reloadable="true" source="org.eclipse.jst.jee.server:app014"/>
+	 -->
 	
 	
 	
