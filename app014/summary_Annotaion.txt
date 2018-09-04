@@ -54,5 +54,9 @@
      - 생성자, 필드, 메소드에 적용 가능
      - set 계열의 메소드가 아닌 메소드에도 적용 가능
      
+   [@Qualifier(xml파일에서 특정한 빈 지정)
+     - /app014/src/main/resources/sample07_useAutowire.xml에 복수의 빈이 있고,
+       이 중 특정한 빈을 선택해서 의존하게 함.
+     
      
      

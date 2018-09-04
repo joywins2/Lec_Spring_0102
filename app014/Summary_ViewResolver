@@ -1,0 +1,65 @@
+[ViewResolver 구현 클래스와 다수의 ViewResolover 설정]
+
+ #주요 ViewResolver 구현 클래스
+ 
+  .InternalResourceViewResolver  : 
+    . 뷰이름으로 부터 JSP나 Tiles 연동을 위한 View 객체를 리턴함.
+    . JSP나 Html 파일과 같이 웹 어플리케이션의 내부자원을 이용하여 뷰를 생성하는 
+      AbstractUrlBasedView 타입의  뷰객체를 리턴함.  
+    . 기본적으로 사용하는 View 클래스 임
+    . prefix, suffix 프로퍼티를 사용
+	  
+	   <bean id="internalresource" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	   	<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	   	<property name="prefix" value="jsp/"/>
+	   	<property name="suffix" value=".jsp"/>
+	   </bean>		  
+  
+  
+  .VelocityViewResolver : 뷰이름으로 부터 Velocity 연동을 위한 View 객체를 리턴
+  
+  .VelocityLayoutResolver : VelocityViewResolover와 동일한 기능을 제고하며, 
+                            추가로 Velocity의 레이아웃 기능을 제공
+  
+                            
+  .BeanNameViewResolver : 
+    . 뷰이름과 동일한 이름을 갖는 빈 객체를 View 객체로 사용함.
+    . 주로 커스텀 View 클래스를  뷰로 사용해야 하는 경우에 사용    
+	   <bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameviewResolver">     
+	     <bean id="download" class="com.spring.download.PdfDown"/>
+	   </bean>
+   
+    --> 특정 Controller에서 뷰의 이름을 "download"로 지정 했을 경우, 
+        위의 com.spring.download.PdfDown 클래스가 처리를 함.
+  
+  
+  .ResourceBundleViewResolver : 뷰이름과 View 객체간의 매핑 정보를 저장하기 위해 자원 파일을 사용
+  
+  
+  .XmlViewResolver : 
+    . 뷰이름과 View 객체간의 매핑정보를 저장하기 위해 XML 파일을 사용함.  
+    . 뷰이름과 동일한 이름을 갖는 빈을 뷰 객체로 사용함.
+    . 별도의 xml설정 파일로부터 빈 객체를 검색함.
+	    <bean id="viewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+	      <property name="location" value="/WEB-INF/views/aaa.xml"/>
+	    </bean>       
+    
+  # 다수의 ViewResolver 설정
+    . 하나의 DispatcherServlet은 한개 이상의 ViewResolver를 설정할 수 있다.
+    . "order" 프로퍼티를 이용해서 뷰 이름을 검사할 ViewResolver의 순서를 결정함.
+    . 우선순위가 높을수록 "order" 프로퍼티의 값은 적다. 
+      높은 ViewResolver가 null을 리턴하면, 다음 우선 순위의 ViewResolver에 뷰를 요청함.
+    
+    ** InternalResourceViewResolver는 가장 낮은 마지막 우선순위를 갖도록 지정해야 함.
+       왜냐하면 null을 리턴하지 않기 때문에, 마지막이 아닌 경우에는 다음 순서의 ViewResolver가 
+       사용되지 않는다.
+       
+	    <bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1"/>
+	
+	    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	    	<property name="order" value="2"/>
+	    	
+	    	<property name="prefix" value="aaa/" />
+	    	<property name="suffix" value=".jsp" />
+	    </bean>
+    
