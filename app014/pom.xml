@@ -115,7 +115,31 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 			<scope>test</scope>
-		</dependency>        
+		</dependency>   
+			
+		<!--
+		 ...@Valid와 @InitBinder : 
+		    validate()를 직접 호출하지 않고 스프링 프레임 워크에서 호출하는 방법.
+		    /app014/src/main/java/org/joy/web/SampleController06.java
+			//...@Valid와 @InitBinder 사용.
+			@RequestMapping("/memberInputAnnotationOk")
+			public String memberInputAnnotationOk(@ModelAttribute("member")  @Valid Member member,   
+			                      BindingResult result){
+			                      		    
+		    How to resolve javax.validation cannot be resolved?
+		    https://youtu.be/pLyHX0MSCrg     
+		 -->
+	     <dependency>
+	     	<groupId>javax.validation</groupId>
+	     	<artifactId>validation-api</artifactId>
+	     	<version>1.1.0.Final</version>
+	     </dependency>		
+	     
+	     <dependency>
+	     	<groupId>org.hibernate</groupId>
+	     	<artifactId>hibernate-validator</artifactId>
+	     	<version>5.2.4.Final</version>
+	     </dependency>	   
 	</dependencies>
     <build>
         <plugins>

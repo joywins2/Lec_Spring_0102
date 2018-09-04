@@ -1,0 +1,89 @@
+
+[유효성 검사]
+
+  # Validator : org.sprinframework.validation.Validator 인터페이스
+
+   . 구현 메소드
+    - boolean supports(Class<?> arg0) : Validator가 해당 클래스에 대한 값 검증을 지원 여부를 리턴한다.
+    - void validate(Object target, Errors errors) :  target객체에 대한 검증을 실행하는 메소드
+                             검증결과에 문제가 있을 경우에는 errors 객체에 에러 정보를 저장함.
+        
+         
+  # 커멘드 객체에 검증 코드 추가 방법
+  
+    . @RequestMapping 어노테이션 메서드에서 커멘드 객체 다음 파라미터로 BindingResult 타입이나 
+                      Errors타입의 파라미터를 추가한다.       
+   
+    . @RequestMapping 어노테이션 메서드내에서 Validator 객체를 생성 후  validate() 메서드 호출한다.  
+                      이때 커멘드 객체와 BindingResult 또는 Errors 타입의 파라미터를 전달 한다.   
+         
+    . Errors.hasErrors() 메서드를 이용하면 에러가 있는 지 여부를 확인 할 수 있다. 
+                         에러가 있는 경우 true, 없는 경우 false 리턴함.
+                         
+    . 작업순서 : 커맨드객체 → 입력폼 → 컨트롤러.
+    
+
+    
+   # ValidationUtils 클래스 
+     :validate()메소드를 좀 더 편리하게 사용할 수 있도록 한 클래스 이다.
+     
+     //validate() 메소드내에서 처리하는 코드
+     
+     String memName = member.getName();     
+		if(memName == null || memName.trim().isEmpty()){
+			System.out.println("회원 이름을 입력하세요..");
+			errors.rejectValue("name","입력시 오류 발생");
+		}//if()
+     
+    -----> ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "입력시 오류 발생"); 
+
+
+   # @Valid와 @InitBinder : 
+	    validate()를 직접 호출하지 않고 스프링 프레임 워크에서 호출하는 방법.
+	    /app014/src/main/java/org/joy/web/SampleController06.java
+		//...@Valid와 @InitBinder 사용.
+		@RequestMapping("/memberInputAnnotationOk")
+		public String memberInputAnnotationOk(@ModelAttribute("member")  @Valid Member member,   
+		                      BindingResult result){
+    
+     
+     [Errors 인터페이스와 BindingResult 인터페이스]
+     
+     Errors : org.springFramework.validation.Errors : 유효성 검증 결과를 저장할 때 사용
+     BindingResult : org.springFramework.validation.BindingResult : Errors의 하위 인터페이스로서
+     	폼 값을 커멘드 객체에 바인딩한 결과를 저장하고 에러코드로 부터 에러 메시지를 가져온다.
+     
+     # Errors 인터페이스가 제공하는 메소드(반환 타입 void)
+	     .reject(String errorCode) : 전 객체에 대한 글로벌 에러 코드를 추가
+	     
+	     .reject(String errorCode, String defaultMessage) : 전 객체에 대한 글로벌 에러코드를 추가하고, 에러코드에 대한
+	     	메시지가 존재하지 않을 경우 defaultMessage를 사용
+	     	
+	     .reject(String errorCode, Object[] errorArgs, String defaultMessage) : 전 객체에 대한 글로벌 에러코드를
+	     	추가, 메시지 인자로 errorArgs를 전달, 에러코드에 대한 메시지가 존재하지 않을 경우에는 defaultMessage를 사용
+	          	
+	     .rejectValue(String field, String errorCode) : 필드에 대한 에러코드를 추가
+	
+	     .rejectValue(String field, String errorCode, String defaultMessage) : 필드에 대한 에러코드를 추가
+			에러코드에 대한 메시지가 존재하지 않을 경우 defaultMessage를 사용
+	     .rejectValue(String field, String errorCode, Ojbect[] errorArgs, String defaultMessage) : 필드에 대한 
+	      	에러코드를 추가, 메시지 인자로 errorArgs를 전달, 에러코드에 대한 메시지가 존재하지 않을 경우 defaultMessage를 사용
+	      	
+      
+      # Errors 인터페이스의 에러 발생 여부를 확인하기 위한 메소드
+      
+         . boolean hasErrors() : 에러가 존재하는 경우 true 리턴
+         . int getErrorCount() : 에러 개수를 리턴
+         . boolean hasGlobalErrors : reject() 메소드를 이용해서 추가된 글로벌 에러가 존재할 경우 true 리턴
+         . int getGlobalErrorCount() : reject() 메소드를 이용해서 추가된 글로벌 에러 개수를 리턴
+         . boolean hasFieldErrors() : rejectValue() 메소드를 이용해서 추가된 에러가 존재할 경우 true 리턴
+         . int getFieldErrorCount() : rejectValue() 메소를 이용해서 추가된 에러 개수를 리턴
+         . boolean hasFieldErrors(String field) : rejectValue() 메소드를 이용해서 추가한 특정 필드의 에러가 존재
+         	할 경우 true를 리턴
+         . int getFieldErrorCount(String field) : rejectValue() 메소드를 이용해서 추가한 특정 필드의 
+         	에러 개수를 리턴      	
+     
+     
+     
+     
+         
