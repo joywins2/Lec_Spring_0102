@@ -1,0 +1,58 @@
+[@Component]
+
+ @Controller는 @Component을 상속한다.
+ 
+	<context:component-scan base-package=""/> 태그를 사용해서 스프링이 클래스(컴포넌트, 컨트롤러)를 검색할 패키지를 지정
+	<context:component-scan base-package=""/> 태그는 base-package에서 지정한 패키지에서 @Component가 적용된 클래스를
+											   검색해서 빈으로 자동 등록한다.
+
+	# 따라서, XML 설정 파일이 다양한 빈 정보를 추가하지 않더라도 된다.										   
+     
+     * 설정파일에서는 <context:annotation-config>태그를 사용한다.
+  	
+	@Component("beanId_service01")
+	public class AbstractSvcImpl implements AbstractSvc {
+		
+		private String name = "01";
+		
+		@Override
+		public String getClassName(){
+			return "AbstractSvcImpl - "+name;
+		}
+	}
+    설정파일에서 <bean>태그로 작성을 한다면
+    <bean id="beanId_service01" class="com.spring.annotationEx.AbsractSvcImpl" />와 같은 방법
+    
+    @Component("service02")
+	public class AbstractSvcImpl02 implements AbstractSvc {
+		private String name = "02";
+		
+		@Override
+		public String getClassName(){
+			return "AbstractSvcImpl - "+name;
+		}
+	}
+    설정파일에서 <bean>태그로 작성을 한다면
+    <bean id="service02" class="com.spring.annotationEx.AbsractSvcImpl02" />와 같은 방법    
+    
+    
+  [@Resource]  
+     자바 6 및 JEE 5에 추가되었다.
+     어플리케이션에서 필요로 하는 자원을 자동으로 연결할 때 사용함. 
+     스프링 2.5부터 지원하는 어노테이션임.
+     스프링에서는 의존하는 빈 객체를 전달할 때 사용
+     
+     설정파일에서는
+     <context:annotation-config>태그를 사용하고,
+     또는
+     <bean class="org.springframework.beans.factory.annotation.CommonAnnotationBeanPostProcessor"/>
+     클래스를 빈으로 등록시켜 사용하는 방법이 있다.
+     
+     
+   [@Autowired]
+     - 의존관계 자동 설정(type 기반)  
+     - 생성자, 필드, 메소드에 적용 가능
+     - set 계열의 메소드가 아닌 메소드에도 적용 가능
+     
+     
+     
