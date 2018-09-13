@@ -1,0 +1,616 @@
+25p.소스코드 : MyBatis3.2.1, MyBatis-스프링 1.2.0.
+27p.샘플소스 설명.
+47p.MySql5.5.25.
+	참조자료 : http://www.ntu.edu.sg/home/ehchua/programming/sql/MySQL5.6_HowTo.html#zz-3.2
+	
+	my.ini 파일 설정 내용 참조 :
+	# Save as "my.ini" in your MySQL installed directory (e.g. d:\myProject\mysql)
+	   
+	[client]
+	default-character-set = utf8
+	# MySQL client connects to the server running on this TCP port number
+	port=8888
+
+	[mysqld]
+	skip-character-set-client-handshake
+	#default-character-set = utf8
+	character-set-server = utf8
+	collation-server = utf8_general_ci
+	init-connect = SET NAMES utf8
+	# Run the server on this TCP port number
+	port=8888
+
+	[mysqldump]
+	default-character-set = utf8
+
+	[mysql]
+	default-character-set = utf8
+	
+	참조자료: http://bstar36.tistory.com/307 [멋지게 놀아라]
+	show character set ;
+	show character set where description like '%Korean%' ;
+
+	status;
+
+	생성 시 설정해 주는 방법
+	CREATE DATABASE `utf8db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+	CREATE DATABASE `euekrdb` DEFAULT CHARACTER SET euckr COLLATE euckr_korean_ci ;
+	 
+	Alter 명령으로 변경 하는 방법
+	ALTER  DATABASE  db명 DEFAULT CHARACTER SET utf8 ;
+
+	데이터베이스 캐릭터 셋 확인
+	SELECT schema_name , default_character_set_name
+	FROM information_schema.schemata ;
+	
+
+52p.샘플 DB SQL문 및 JDK7 :
+	use mysql;
+
+	insert into mysql.user(Host, User, Password, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, ssl_cipher, x509_issuer, x509_subject)
+	values('localhost', 'mybatis', password('mybatis'), 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '');
+
+	select host, user, password from mysql.user;
+
+	flush privileges;
+
+	create database if not exists mybatis_example;
+
+	show databases;
+67p.JDBC코드와 MyBatis코드.
+70p.mybatis-3.2.1.jar.
+77p.DB 드라이버별 JDBC 설정 정보.
+81p.MyBatis객체 설정파일은 클래스패스 경로기준으로 파일명 표기함.
+
+88p.Sample Table Create SQL문 :
+	CREATE TABLE `comment` (
+	  `comment_no` bigint(19) NOT NULL AUTO_INCREMENT,
+	  `user_id` varchar(32) NOT NULL,
+	  `comment_content` mediumtext NOT NULL,
+	  `reg_date` datetime DEFAULT NULL,
+	  PRIMARY KEY (`comment_no`)
+	) DEFAULT CHARSET=utf8 ;
+
+
+	CREATE TABLE `reply` (
+	  `reply_no` bigint(19) NOT NULL AUTO_INCREMENT,
+	  `comment_no` bigint(19) NOT NULL,
+	  `user_id` varchar(32) NOT NULL,
+	  `reply_content` varchar(300) NOT NULL,
+	  `reg_date` datetime NOT NULL,
+	  PRIMARY KEY (`reply_no`)
+	) DEFAULT CHARSET=utf8 ;
+
+	CREATE TABLE `user` (
+	  `user_id` varchar(32) NOT NULL,
+	  `user_name` varchar(100) NOT NULL,
+	  PRIMARY KEY (`user_id`)
+	) DEFAULT CHARSET=utf8 ;
+
+89p.캐시 사용하면 implements Serializable 구현 사용함.
+90p.테이블표기법(언더바)와 클래스표기법(낙타표기법).
+94p.MyBatis표기법 : ${get/set제외한 소문자표기}.
+
+97p.샘플데이터 생성 :
+	INSERT INTO `comment`
+	(`comment_no`, `user_id`, `comment_content`, `reg_date`)
+	VALUES
+	('2', 'manager', 'test', '2012-06-13 09:22:39');
+
+	INSERT INTO `comment`
+	(`comment_no`, `user_id`, `comment_content`, `reg_date`)
+	VALUES
+	('3', 'user2', '댓글3', '2012-04-13 15:22:39');
+
+	INSERT INTO `comment`
+	(`comment_no`, `user_id`, `comment_content`, `reg_date`)
+	VALUES
+	('5', 'user3', '댓글5', '2012-04-13 15:04:39');
+	
+143p.http://localhost:8080/jsp/xml/comment_resultmap_one.jsp?commentNo=2
+144p.XML매퍼만 사용과 동적 SQL 사용 : ref147p. ref272p.
+146p.인터페이스만 사용.
+147p.260p.302p.@Provider 사용 : 동적 SQL 사용 : ref144p. ref272p.
+	1.@Provider 어노테이션을 사용하는 매퍼인터페이스:
+		public interface CommentMapper {
+			//...147p.151p.
+			@SelectProvider(type=CommentSqlProvider.class, 
+			                method="selectCommentByCondition")
+			List<Comment> selectCommentByCondition(Map<String, Object> condition);
+		}
+		
+	2.구문 빌더 API를 사용한 동적 SQL을 처리하는 클래스:
+		public class CommentSqlProvider {
+			public String selectCommentByCondition(Map<String, Object> condition) {
+				BEGIN();
+				SELECT("comment_no, user_id, comment_content, reg_date");
+				FROM("comment");
+				WHERE("comment_no = #{commentNo}");
+
+				return SQL();
+			}
+		}
+	3.DAO에서 어노테이션을 적용한 매퍼인터페이스 메서드 호출 : sqlSession.getMapper(매퍼인터페이스.class).메서드(condition) 사용.
+		public class CommentMapperRepository extends AbstractRepository {
+			private static final Logger LOGGER = LoggerFactory.getLogger(CommentMapperRepository.class);
+
+			//...149p.
+			public List<Comment> selectCommentByCondition(Map<String, Object> condition) {
+				SqlSession sqlSession = getSqlSessionFactory().openSession();
+				List<Comment> result = null;
+				try {
+					result = sqlSession.getMapper(CommentMapper.class).selectCommentByCondition(condition);
+				} catch (Exception e) {
+					LOGGER.warn("{} : {}", e.getMessage(), e);
+				} finally {
+					sqlSession.close();
+				}
+				return result;
+			}
+		}	
+
+157p.결과매핑 관련 SQL :
+	delete from comment;
+	delete from reply;
+	delete from user;
+
+	insert into comment values(1, 'fromm0', 'test', '2013-01-17 20:12:43');
+	insert into comment values(2, 'user1', 'test', '2013-01-17 14:46:20');
+
+	insert into reply values(1, 1, 'user1', 'reply1_1', '2012-04-13 15:05:49');
+	insert into reply values(2, 1, 'user1', 'reply1_2', '2012-04-13 15:05:52');
+	insert into reply values(3, 1, 'user1', 'reply1_3', '2012-04-13 15:05:54');
+	insert into reply values(4, 1, 'user1', 'reply1_4', '2012-04-13 15:05:55');
+	insert into reply values(5, 2, 'user1', 'reply1_5', '2012-04-13 15:06:03');
+
+	insert into user values('user1', 'user1');
+	insert into user values('fromm0', 'joywins');
+	
+158p.resultType속성 vs resultMap속성 : ref258p.
+160p.225p.mapUnderscoreToCamelCase속성.
+160p.http://localhost:8080/jsp/xml/comment_resultmap_one.jsp?commentNo=2
+162p.constructor::idArg, arg vs resultMap::id, result : ref262p.
+163p.http://localhost:8080/jsp/xml/comment_resultmap_one.jsp?commentNo=2
+166p.association(1:1) : ref263p.
+172p.http://localhost:8080/jsp/xml/comment_resultmap_association.jsp?commentNo=2
+173p.collection(1:N) : List 타입, ofType.
+178p.http://localhost:8080/jsp/xml/comment_resultmap_collection.jsp?commentNo=1
+179p.discriminator : 동적 결과 매핑, ref266p.
+180p.http://localhost:8080/jsp/xml/comment_resultmap_discriminator.jsp?commentNo=2
+
+196p.applicationContext.xml 파일.
+201p.매퍼인터페이스 위치 지정 3가지 방법 : 
+	1. mapperScannerConfigurer(자동검색).
+	2. mapperLocations 속성에 array, value 나열.
+	3. MapperFactoryBean 사용해서 mapperInterface 속성값에 매퍼마다 빈으로 설정.
+	
+206p.@Service, @Transactional.
+207p.@Repository.
+208p.SqlSessionTemplate빈 : 
+	MyBatis 기능 사용을 위해 반드시 빈 선언하고 @Autowired함.
+	마이바티스가 제공하는 메서드를 그대로 제공함.
+
+212p.org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate : 
+	'?'를 사용하는 JdbcTemplate 대신 이름있는 파라미터 사용함.
+213p.StringBuilder에서 where 조건문 변수 표기 ':Map의key' 사용함.
+	MapSqlParameterSource 와 BeanPropertySqlParameterSource.
+	RowMapper.
+		StringBuilder sql = new StringBuilder("");
+		sql.append("SELECT comment_no, user_id, comment_content, reg_date FROM COMMENT WHERE comment_no = :commentNo ");
+		Map<String, Object> condition = new HashMap<String, Object>();
+		condition.put("commentNo", commentNo);
+		SqlParameterSource namedParameters = new MapSqlParameterSource(condition);
+		RowMapper<Comment> rowMapper = ParameterizedBeanPropertyRowMapper.newInstance(Comment.class);
+		List<Comment> result = this.jdbcTemplate.query(sql.toString(), namedParameters, rowMapper);	
+
+220p.MyBatis 다양한 설정 : mybatis-config.xml.		
+222p.331p.properties 엘리먼트 : resources(클래스패스 기준), 파일 절대경로, ${key}.
+223p.settings 엘리먼트 :
+	multipleResultSetsEnabled (다중 결과 집합 사용) : https://technet.microsoft.com/ko-kr/library/ms378758(v=sql.105).aspx
+	useGeneratedKeys, mapUnderscoreToCamelCase속성.
+226p.typeAliases 엘리먼트.	
+232p.plugins 엘리먼트 : 마치 AOP 또는 인터셉터와 비슷함.
+235p.environments 엘리먼트 :
+	transactionManager : JDBC(MyBatis), MANAGED(Container).
+	dataSource 타입 : UNPOOLED, POOLED, JNDI.
+239p.mappers 엘리먼트.
+	위치 지정 방법 : resources, class, url, 패키지 name.
+	위치 지정 방법2 : mapperLocations 속성.
+	
+244p.268p.매퍼 XML :: cache, cache-ref 엘리먼트 : 1024개, eviction : LRU, FIFO...
+246p.분산 캐시 : Cacheonix, Ehacache, Hazelcast, OsCache.
+249p.sql 엘리먼트 : include refid.
+252p.257p.selectKey 엘리먼트 : 방금 입력한 자동 생성 키가 무슨 값인지 입력과 동시에 알아냄.ref273p.
+	<insert id="insert" parameterType="패키지명">
+		<selectKey resultType="자료형" keyProperty="commentNo자동생성키를 설정할 객체의 프로퍼티"
+				   order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT ...
+	</insert>
+256p.select 엘리먼트 :: resultSetType 속성 : 커서 이동 규칙.
+
+256p.매퍼 INTERFACE :
+	매퍼 NameSpace = 매퍼 패키지 + 인터페이스명.
+	매핑 ID = 메서드.
+	SQL 어노테이션 사용.
+257p.252p.매퍼 INTERFACE : ref158p.
+	public interface ㅇㅇㅇMapper{
+		@Select({"... where comment_no = #{commentNo, jdbcType=BIGINT}"})
+		@Results({ @Result(column="comment_no", property="commentNo", jdbcType=JdbcType.BIGINT, id=true),
+		           @Result(column="reg_date", property="regDate", jdbcType=JdbcType.TIMESTAMP),
+				   ......})
+		Comment selectByPrimaryKey(Long commentNo);
+		
+		@Insert({"... values(#{userId, jdbcType=VARCHAR}, #{regDate, jdbcType=TIMESTAMP},...)" })
+		@SelectKey(statement="SELECT LAST_INSERT_ID()", 
+		           keyProperty="commentNo", before=false, resultType=Long.class)
+		int insertComment(Comment record);
+		
+258p.@Results(resultMap), @Result(result), id.
+
+260p.매퍼 INTERFACE 사용 : DAO 호출 형식 : sqlSession.getMapper(매퍼 INTERFACE).메서드();
+	public class CommentMapperRepository extends AbstractRepository {
+		......
+		//...149p.151p.260p.
+		public Comment selectCommentByPrimaryKey(Long commentNo) {
+			SqlSession sqlSession = getSqlSessionFactory().openSession();
+			
+			Comment result = sqlSession.getMapper(CommentMapper.class).selectCommentByPrimaryKey(commentNo);
+			sqlSession.close();
+			
+			return result;
+		}
+	
+262p.269p. 생성자를 사용한 XML 결과 매핑 vs 어노테이션 결과 매핑 : ref162p.
+	<resultMap id="constructorResultMap" type="Comment">
+		<constructor>
+			<idArg column="comment_no" javaType="long" />
+			<arg column="user_id" javaType="string" />
+			<arg column="reg_date" javaType="date" />
+			<arg column="comment_content" javaType="string" />
+		</constructor>
+	</resultMap>
+
+	@ConstructorArgs({@Arg(column = "comment_no", javaType = Long.class, jdbcType = JdbcType.BIGINT, id = true),
+		@Arg(column = "user_id", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+		@Arg(column = "reg_date", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
+		@Arg(column = "comment_content", javaType = String.class, jdbcType = JdbcType.LONGVARCHAR)})
+
+263p.association(1:1) : ref166p.
+	<resultMap id="associationResultMap" type="Comment">
+		<id column="comment_no" jdbcType="BIGINT" property="commentNo" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="reg_date" jdbcType="TIMESTAMP" property="regDate" />
+		<result column="comment_content" jdbcType="VARCHAR" property="commentContent" />
+		<association property="user" column="user_id" javaType="User">
+			<id property="userId" column="user_id" />
+			<result property="userName" column="user_name" />
+		</association>
+	</resultMap>
+	
+
+	/**
+	 * ...263p."객체타입필드명.필드명" 형태의 프로퍼티 셋팅으로 비슷한 처리를 하도록 할 수 있다.  
+	 * 자바 애노테이션은 순환참조를 허용하지 않기 때문에 매퍼 XML의 association엘리먼트와 같은 결과매핑을 처리하기 어렵다. 
+	 * 
+	 * 
+	 * @param commentNo
+	 * @return
+	 */
+	@Select({"SELECT c.comment_no, c.user_id, c.comment_content, c.reg_date, u.user_name ", 
+			"FROM comment c, user u ", 
+			"WHERE c.user_id = u.user_id ", 
+			"AND c.comment_no = #{commentNo}  "})
+	@Results({
+		@Result(column="comment_no", property="comment.commentNo", id=true),
+		@Result(column="user_id", property="comment.userId"),
+        @Result(column="reg_date", property="comment.regDate", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="comment_content", property="comment.commentContent"),
+		@Result(column="user_id", property="user.userId"),
+		@Result(column="user_name", property="user.userName")
+    })
+	CommentUser selectCommentByPrimaryKeyAssociation2(Long commentNo);
+	
+264p.@Result :: one 속성과 @One : JOIN 매핑에서 사용 안됨.
+     @Result :: many 속성과 @Many : JOIN 매핑에서 사용 안됨.
+	@Results({
+		@Result(column="comment_no", property="comment.commentNo", id=true),
+		......
+		@Result(column="user", property="user", one=@One(select = "패키지명.매퍼.메서드"))
+	})
+	CommentUser selectCommentByPrimaryKeyAssociation2(Long commentNo);
+
+266p.@TypeDiscriminator	: 동적 결과 매핑. ref179p :
+	<!-- ...179p.266p. -->	
+	<resultMap id="discriminatorResultMap" type="Comment">
+		<id column="comment_no" jdbcType="BIGINT" property="commentNo" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="reg_date" jdbcType="TIMESTAMP" property="regDate" />
+		<result column="comment_content" jdbcType="VARCHAR" property="commentContent" />
+		<discriminator javaType="string" column="user_id">
+			<case value="fromm0" resultMap="baseResultMap" />
+			<case value="manager" resultMap="constructorResultMap" />
+		</discriminator>
+	</resultMap>
+
+	/**
+	 * 	...266p.
+	 * <discriminator javaType="string" column="user_id">
+	 * <case value="fromm0" resultMap="baseResultMap" />
+	 * <case value="manager" resultMap="constructorResultMap" />
+	 * </discriminator>
+	 * 
+	 * @param commentNo
+	 * @return
+	 */
+	@Select({"SELECT comment_no, user_id, comment_content, reg_date ", 
+		"FROM comment ", 
+		"WHERE comment_no = #{commentNo} "})
+	//	@Results({
+	//		@Result(column="comment_no", property="commentNo", id=true),
+	//		@Result(column="user_id", property="userId"),
+	//	    @Result(column="reg_date", property="regDate", jdbcType=JdbcType.TIMESTAMP),
+	//	    @Result(column="comment_content", property="commentContent"),
+	//	})
+	@TypeDiscriminator(column="user_id", javaType=String.class, cases={
+		@Case(value="fromm0", type=Comment.class, results={
+			@Result(column="comment_no", property="commentNo", id=true),
+			@Result(column="user_id", property="userId"),
+			@Result(column="reg_date", property="regDate", jdbcType=JdbcType.TIMESTAMP),
+			@Result(column="comment_content", property="commentContent")}),
+		@Case(value="manager", type=Comment.class, constructArgs={
+			@Arg(column = "comment_no", javaType = Long.class, jdbcType = JdbcType.BIGINT, id = true),
+			@Arg(column = "user_id", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+			@Arg(column = "reg_date", javaType = Date.class, jdbcType = JdbcType.TIMESTAMP),
+			@Arg(column = "comment_content", javaType = String.class, jdbcType = JdbcType.LONGVARCHAR)})
+	})
+	Comment selectCommentByPrimaryKeyDiscriminator2(Long commentNo);
+	
+268p.MyBatis가 제공하는 어노테이션 :
+	@CacheNamespace : <cache> : implementation, eviction, flushInterval, size, readWrite.
+	@CacheNamespaceRef : <cacheRef> : value.
+	@ConstructorArgs : <constructor> :: @Arg : <arg>, <idArg>.
+	@TypeDiscriminator : <discriminator> :: @Case : <case>.	
+	@Results : <resultMap> :: @Result : <result>, <id>.
+	@One : <association>.
+	@Many : <collection>.
+	@MapKey : 반환타입이 Map인 메서드에서 사용.
+	@Options : 매핑 구문의 속성을 다양하게 적으면 보기 불편하므로 @Options 어노테이션으로 별도로 정리함.
+		useCache=true, flushCache=false, resultSetType=FORWARD_ONLY, statementType=PREPARED,
+		fetchSize=-1, timeout=-1, useGeneratedKeys=false, keyProperty="id", keyColumn="".
+	@Insert, @Update, @Delete, @Select : <insert>, <update>, <delete>, <select> :: value.
+	@InsertProvider, @UpdateProvider, @DeleteProvider, @SelectProvider : <insert>, <update>, <delete>, <select> : 동적 SQL 생성.
+		<!-- ...144p. if test 속성값 안에 표현식 사용함. -->
+		<select id="selectCommentByCondition" parameterType="hashmap" resultType="Comment">
+			SELECT
+				comment_no,
+				user_id,
+				comment_content,
+				reg_date
+			FROM comment
+			<if test="commentNo != null">
+				WHERE comment_no = #{commentNo}
+			</if>
+		</select>
+
+		public interface CommentMapper {
+
+			//...147p.151p.
+			@SelectProvider(type=CommentSqlProvider.class, method="selectCommentByCondition")
+			List<Comment> selectCommentByCondition(Map<String, Object> condition);
+
+		//...148p.
+		public class CommentSqlProvider {
+			public String selectCommentByCondition(Map<String, Object> condition) {
+				BEGIN();
+				SELECT("comment_no, user_id, comment_content, reg_date");
+				FROM("comment");
+				WHERE("comment_no = #{commentNo}");
+
+				return SQL();
+			}
+		}	
+
+	@Param : 메서드 파라미터의 이름 <> 어노테이션에 정의한 SQL 파라미터 표기법 이름.
+		@Param("person") String personCode로 지정하면 파라미터 표기법에서 #{person}으로 지정하더라도
+		personCoe 파라미터의 값을 사용함.
+		
+	@SelectKey : 자동생성키를 가져옴. ref252p.	
+		keyProperty, resultType, before, statementType(STATEMENT, PREPARED, CALLABLE)
+
+	@ResultMap : ref158p.ref255p.
+		매퍼XML과 매퍼인터페이스를 사용할 때, 매퍼인터페이스에서 매퍼XML에 정의한 결과 매핑을 사용할 수 있음.
+		@ResultMap 어노테이션은 매퍼XML에 정의한 결과 매핑을 사용하기 위해 제공함.
+		
+274p.SqlSession API : 입력/수정/삭제 + 조회(select, Map, List, Object).
+	select 메서드는 반환 타입이 없고, 파라미터로 전달한 ResultHandler로 결과 데이터를 처리함.
+	
+279p.매퍼XML 제공 기능 :
+	캐시 처리 : cache-ref, cache.
+	결과 매핑 : resultMap, id, result, association, collection, discriminator.
+	매핑 구문 정의 : sql, insert, update, delete, select.
+279p.매퍼인터페이스 제공 기능 :
+	캐시 처리 : CacheNamespace, CacheNamespaceRef.
+	결과 매핑 : Arg, TypeDiscriminator, Case, Result, ResultMap, Results, 
+			  Many, One, ConstructorArgs, MapKey, Options.
+	매핑 구문 : Delete, DeleteProvider, Insert, InsertProvider, Param, 
+	          Select, SelectKey, SelectProvider Update, UpdateProvider.
+			  
+280p.XML매퍼 동적SQL 엘리먼트 : if, choose(when, otherwise), trim(where, set), foreach.
+
+281p.OGNL 기본 문법 : Object Graph Navigation Language, JSTL core 라이브러리 if 태그.
+	<%@ taglib prefix="c" url="http://java.sun.com/jsp/jstl/core" %>
+	<c:if test="${obj.val !== null || obj.val2 == 1}">	
+	comment.userId, hashCode(), comments[0].	
+	
+285p.290p.choose(when, otherwise) 엘리먼트와 trim(where) 엘리먼트 :
+	하위 엘리먼트가 내용을 만들면 prefix 속성에 설정한 'WHERE'를 붙이고,
+	하위 엘리먼트가 생성한 내용이 'AND/OR'로 시작하면 prefixOverrides 속성에 설정한 'AND/OR'를
+	자동으로 지워줌.
+	prefix, prefixOverrides, suffix, suffixOverrides.
+	
+	<select id="selectCommentByCondition" parameterType="hashmap" resultType="Comment">
+		SELECT
+		  comment_no,
+		  user_id,
+		  comment_content,
+		  reg_date
+		FROM COMMENT
+		<where>
+			<if test="commentNo != null">
+			comment_no = #{commentNo}
+			</if>
+		</where>
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="commentNo != null">
+			AND comment_no = #{commentNo}
+			</if>
+			<if test="commentNo != null">
+			AND comment_no = #{commentNo}
+			</if>
+			<if test="commentNoForeach != null and commentNoForeach.size() > 0">
+			AND comment_no IN <foreach collection="commentNoForeach" item="commentNo" index="index" open="(" separator="," close=")">#{commentNo}</foreach>
+			</if>
+		</trim-->	
+	</select>
+	
+	<update id="updateCommentTrim" parameterType="Comment">
+		UPDATE comment		
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="commentContent != null">
+			comment_comment = #{commentContent},
+			</if>
+			<if test="regDate != null">
+			reg_date = #{regDate}
+			</if>
+		</trim>	
+		WHERE comment_no = #{commentNo}
+	</select>	
+
+	<select id="selectCommentByConditionChoose" parameterType="hashmap" resultType="Comment">
+		SELECT
+			comment_no,
+			user_id,
+			comment_content,
+			reg_date
+		FROM comment
+		<choose>
+			<when test="commentNo != null">
+			WHERE comment_no = #{commentNo}
+			</when>
+			<when test="user != null and user.userId != null">
+			WHERE user_id = #{user.userId}
+			</when>
+			<otherwise>
+			WHERE comment_no = 1
+			AND user_id = 'fromm0'
+			</otherwise>
+		</choose>
+	</select>
+	
+292p.foreach 엘리먼트 : 조회조건 IN절로 조건을 추가할 때 사용함 :
+	foreach 엘리먼트에서 댓글 번호 목록 각각을 쉼표',' 구분자로 합치고, 앞뒤로 '('와 ')'를 붙임.
+	collection : 값 목록을 가진 객체, 배열 또는 List.
+	item : 목록에서 foreach를 통해 가져온 각각의 값.
+	index : 몇번째, 0부터 시작함.
+	open : IN절에서는 대부분 '('로 시작함.
+	close : IN절에서는 대부분 ')'로 끝남.
+	separator : IN절에서는 값 사이에 쉼표','를 붙여줌.
+	
+	<select id="selectCommentByConditionForeach" parameterType="hashmap" resultType="Comment">
+		SELECT
+			comment_no,
+			user_id,
+			comment_content,
+			reg_date
+		FROM comment
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="commentNos != null">
+				comment_no IN 
+				<foreach collection="commentNos" 
+				         item="commentNo" index="index" 
+						 open="(" close=")" separator=",">
+				#{commentNo}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+		
+293p.set 엘리먼트 : Update에서 마지막으로 명시된 컬럼에 표기된 쉼표','를 제거함.  
+	<update id="updateCommentIf" parameterType="Comment">
+		UPDATE comment
+		<set>
+			<if test="...">comment_content = #{commentContent}, </if>
+			<if test="...">reg...= #{regDate}, </if>
+		</set>
+		WHERE comment_no = #{commentNo};
+	</update-->
+	
+294p.OGNL을 사용한 정적 메서드와 정적 필드에 접근 :
+	@클래스@메서드(args).
+	@클래스@필드.
+	정적 메서드와 정적 필드를 가진 클래스.
+		public class 샘플클래스명{
+			public static final Long[] 정적필드명 = {1L, 2L};
+			public static Long 정적메서드명(){ return 1L; }
+		}
+	예제01.정적 메서드를 사용한 매핑 : 언더바'_'를 사용하여 OGNL로 바인딩한 값임을 구분함.
+		<select id="selectA" parameterType="hashmap" resultType="Comment">
+			SELECT ...
+			FROM comment
+			<if test="_정적필드명 = @패키지.샘플클래스명@정적메서드명">
+				WHERE comment_no = ${_정적필드명}
+			</if> 
+		</select>
+	예제02.정적 필드를 사용한 매핑 : 
+		<select id="selectB" parameterType="hashmap" resultType="Comment">
+			SELECT ...
+			FROM comment
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				<if test="@패키지.샘플클래스명@정적필드명 != null">
+					<foreach collection="@패키지.샘플클래스명@정적필드명"
+							 item="commentNo"
+							 index="index"
+							 open="(" close=")" separator=",">
+						${commentNo}
+					</foreach>
+				</if>
+			</trim>
+		</select>
+	예제03.매핑구문에서 정적메서드를 사용 :
+		<select id="selectC" parameterType="hashmap" resultType="User">
+			SELECT ...
+			FROM user
+			<if test="@org.apache.commons.lag.StringUtil과 같은 정적클래스명@정적메서드(userId)">
+				WHERE user_id = #{userId}
+			</if>
+		</select>	
+298p.마이바티스 OGNL 버그 : #{}로는 정상적인 값 설정이 안되고, ${}를 사용할 때만 값 설정이 정상적으로 되는 경우 발생함.
+
+300p.147p.260p.MyBatis의 구문 빌더 API를 사용한 생성 :
+	public interface 매퍼인터페이스{
+		@SelectProvider(type=클래스명, method="메서드명"0
+		int 매서드명();
+	}
+	
+	SelectBuilder와 SqlBuilder : BEGIN()~SQL() 메서드 사이에 호출하는 메서드는 동일한 클래스의 메서드를 호출해야 함.
+	SelectBuilder : select에 관련된 동적 SQL.
+		public class CommentSqlProvider {
+			public String selectCommentByCondition(Map<String, Object> condition) {
+				BEGIN();
+				SELECT("comment_no, user_id, comment_content, reg_date");
+				FROM("comment");
+				WHERE("comment_no = #{commentNo}");
+
+				return SQL();
+			}
+		}
+		
+306p.SqlBuilder :
+	DELETE_FROM(str), INSERT_INTO(str), SET(str), UPDATE(str), VALUES(str).
+	
+310p.일반적인 Java 코드 사용 : 
+	String : '+연산 사용.
+	StringBuffer, StringBuilder : append() 사용.
+		
