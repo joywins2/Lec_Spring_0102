@@ -1,10 +1,9 @@
 package org.joy.web;
 
-import static org.junit.Assert.fail;
-
 import javax.inject.Inject;
 
-import org.joy.dao.IF_SampleMapper;
+import org.joy.dao.IF_MapperInterface;
+import org.joy.domain.MemberVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,39 +17,37 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @WebAppConfiguration
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/**/root-context.xml" })
-public class SampleMapperTest {
+public class MapperInterfaceTest {
 	
 	@Inject
-	private IF_SampleMapper mapper;
+	private IF_MapperInterface mapper;
 
 	@Test
 	public void testTime() {
 		//fail("Not yet implemented");
 		System.out.println(mapper.getClass().getName());
 		System.out.println("getTime : " + mapper.getTime());
+	}	
+
+	@Test
+	public void testGetEmail_AnnotationedInterface() {
+		//fail("Not yet implemented");
+		String email = mapper.getEmail_AnnotationedInterface("user123", "user123");
+		System.out.println("getEmail_AnnotationedInterface : " + email);
 	}
 
 	@Test
-	public void testIfAnnotationGetEmail() {
+	public void testGetEmail_MixedIfAndXml() {
 		//fail("Not yet implemented");
-		String email = mapper.IfAnnotation_GetEmail("user123", "user123");
-		System.out.println("getEmail : " + email);
+		MemberVO member = mapper.getEmail_MixedIfAndXml("user123", "user123");
+		System.out.println("getEmail_MixedIfAndXml : " + member.toString());
 	}
 
 	@Test
-	public void testMixXmlGetUserName() {
+	public void testGetUserName_SelectProvider() {
 		//fail("Not yet implemented");
-		String userName = mapper.MixXml_GetUserName("user123", "user123");
-		System.out.println("getUserName : " + userName);
+		MemberVO member = mapper.getUserName_SelectProvider("id", "user123");
+		System.out.println("getUserName_SelectProvider : " + member.toString());
 	}
-
-	@Test
-	public void testSearchUserNameDynamicSql() {
-		//fail("Not yet implemented");
-		String userName = mapper.searchUserNameDynamicSql("id", "user123");
-		System.out.println("testSearchUserNameDynamicSql::getUserName : " + userName);
-	}
-	
-	
 
 }

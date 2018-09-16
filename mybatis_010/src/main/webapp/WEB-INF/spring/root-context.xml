@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	...683p.mybatis-spring이 Mapper인터페이스의 구현을자동으로 생성하므로
+	     네임스페이스에서 mybatis-spring을 지정해야 함.
+-->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<!-- ...86, 139, 160, 326p.log4jdbc 설정후 -->	
 		<property name="driverClassName" 
-				  value="com.mysql.jdbc.Driver"></property>
+				  value="com.mysql.cj.jdbc.Driver"></property>
 		<property name="url" 
 				  value="jdbc:mysql://127.0.0.1:3306/zbook_ex?useSSL=false&amp;serverTimezone=Asia/Seoul"></property>
 		<property name="username" value="joywins2"></property>
@@ -21,8 +23,10 @@
 	<bean id="sqlSessionFactory" 
 	      class="org.mybatis.spring.SqlSessionFactoryBean">
 	 	<property name="dataSource" ref="dataSource" />
+	 	<property name="configLocation" 
+				  value="classpath:/mybatis-config.xml"></property>
 		<property name="mapperLocations" 
-		      value="classpath:mappers/**/*Mapper.xml"></property>
+		          value="classpath:mappers/**/*Mapper.xml"></property>
 	</bean>
 	
 	<!-- 
@@ -37,5 +41,6 @@
 	</bean>
      -->	
 	<mybatis-spring:scan base-package="org.joy.dao" />
-	
+	<mybatis-spring:scan base-package="org.joy.dao2" />
+		
 </beans>
