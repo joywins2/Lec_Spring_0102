@@ -1,0 +1,81 @@
+...org.joy.dao 패키지 : DB run by Spring-Mybatis. 
+	Spring에게 모든 것을 맡기므로 가장 심플하여 추천하는 방법임.
+	getEmail_AnnotationedInterface,
+	getEmail_MixedIfAndXml,
+	getUserName_SelectProvider.
+
+...org.joy.dao2 패키지 : DB run by Mybatis only!
+	Mybatis 자체적으로 관리하는 방식이기 때문에, root-context.xml에 이미 설정한 내용이 있지만,  
+	src/main/resources/mybatis-config.xml에 다음 2가지를 별도로 명시적으로 설정해줘야 함.
+	1. environments::environment::dataSource,
+	2. mappers::mapper
+	
+	실행시 주의 : 
+	1. /src/main/java/org/joy/dao2/Main2.java에서는 MemberDao2를 생성해서 dao를 호출해서 사용해야 함.
+	  (static으로 선언된 main에서 @Inject를 주입받지 못해서 객체를 생성해야 하는 것 같음). 
+	2. /src/test/java/org/joy/web/MapperInterfaceTest2.java에서는 스프링프레임워크로 하여금 
+	  IF_MapperInterface2를  @Inject 주입받아서 mapper를 호출해서 사용함.
+
+	Annotationed Mapper Interface CRUD.
+
+	reference.2.01, reference.02는  
+	Spring::root-context.xml::dataSource에 주입하는 방식보다는 이전 방식으로 보임.
+	reference.2.01 : How use @Select MyBatis annotation :
+	https://examples.javacodegeeks.com/enterprise-java/mybatis/how-use-select-mybatis-annotation/
+
+	reference.02 : MyBatis 3 Annotation Example with @Select, @Insert, @Update and @Delete
+	https://www.concretepage.com/mybatis-3/mybatis-3-annotation-example-with-select-insert-update-and-delete
+
+
+...org.joy.dao3 패키지 : DB run by Mybatis only!
+                      dao2 패키지보다는 단순한 형태임.
+                      Annotationed Mapper Interface 사용함.
+	reference.3.01 : http://zetcode.com/db/mybatis/ :: 1st.
+   1. mybatis-config.xml에 mapper를 설정하지 않음. 
+   2. 실행구문인 Main3에서 addMapper(매퍼 인터페이스.class)처리함.
+		String resource = "mybatis-config.xml";
+		Reader reader = null;
+		SqlSession session = null;	
+		reader = Resources.getResourceAsReader(resource);
+		factory = new SqlSessionFactoryBuilder().build(reader);
+		factory.getConfiguration().addMapper(IF_MapperInterface3.class);    
+
+
+...org.joy.dao4 패키지 : DB run by Mybatis only!
+                      dao3 패키지보다 더 단순한 형태임.
+                      XML 매퍼  사용함.
+	reference.4.01 : http://zetcode.com/db/mybatis/ :: 2nd.
+   1. mybatis-config.xml에 mapper를 resource로 파일경로(/)로 구분하여 설정함.
+   2. 실행구문인 Main3에서 addMapper() 사용하지 않음.
+   reference.4.01 : 
+   	ErrMsg : Error parsing SQL Mapper Configuration. Cause: java.io.IOException: Could not find resource
+   	https://blog.csdn.net/u010648555/article/details/70880425
+   	
+
+...org.joy.dao5 패키지 : DB run by Mybatis only!
+                      dao3 패키지처럼 Annotationed Mapper Interface 사용하지만,
+                      mybatis-config.xml 설정파일을 사용하지 않음.
+	reference.5.01 : http://zetcode.com/db/mybatis/ :: 3rd.
+   1. mybatis-config.xml를 사용하지 않음.
+   2. Main5에서 직접 Properties객체에 DB접속 정보를 세팅해서 PooledDataSource정보를 가지는
+      MyPooledDataSourceFactory객체를 이용하여 DataSource객체를 직접 만들어 냄.   	
+
+
+...org.joy.dao6 패키지 : DB run by Mybatis only!
+                      dao 패키지처럼 SelectProvider를 사용하지 않고, 
+                      dao6_Mapper XML에 <where><if><foreach>를 사용한 동적SQL문을 설정하고,
+                      Main6에서 mybatis-config.xml 설정파일을 읽어서 SQL을 실행함.
+	reference.6.01 : http://zetcode.com/db/mybatis/ :: 4rd.
+   1. mybatis-config.xml를 사용함.
+   2. Main6에서 mybatis-config.xml 설정파일을 읽어서 SQL을 실행함.
+   
+
+...org.joy.dao7 패키지 : DB run by Mybatis only! 
+                      Annotationed Mapper Interface를 사용하여 INSERT하고, List 출력함.
+                      
+	reference.6.01 : http://zetcode.com/db/mybatis/ :: 5rd.Books.
+   1. mybatis-config.xml를 사용함.
+   2. Main7에서 MyBatisUtil객체를 호출하여 mybatis-config.xml 설정파일을 읽고,
+      SqlSessionFactory 객체를 생성한 후, SqlSession을 오픈한 후, INSERT와 List를 출력함.
+   
+      

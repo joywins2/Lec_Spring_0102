@@ -24,7 +24,7 @@ public interface IF_MapperInterface2 {
           //@Result(property = "updatedate", jdbcType=JdbcType.TIMESTAMP, column = "updatedate"),
         })
 	@Select("SELECT user_id, user_pw, user_name, email FROM ztbl_member WHERE user_id = #{user_id}")
-	public MemberVO selectMemberByUserId(String user_id);
+	public MemberVO selectMemberByUserId(@Param("user_id") String user_id);
 	
 
 /*	

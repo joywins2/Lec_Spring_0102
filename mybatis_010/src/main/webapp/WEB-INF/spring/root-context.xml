@@ -42,5 +42,6 @@
      -->	
 	<mybatis-spring:scan base-package="org.joy.dao" />
 	<mybatis-spring:scan base-package="org.joy.dao2" />
+	<mybatis-spring:scan base-package="org.joy.dao3" />
 		
 </beans>

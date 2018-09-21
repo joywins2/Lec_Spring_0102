@@ -8,13 +8,35 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
-<!--
-	...183p.mybatis-config.xml::typeAlias태그를 사용하면 boardMapper.xml에서 
-	매번 parameterType, resultType을 패키지까지 포함된 클래스명을 작성하는 번거로움을 덜어줌. 
--->
+	
 	<typeAliases>
 	  <package name="org.joy.domain"/>    
 	</typeAliases>
+	
+<!-- 
+ * ...org.joy.dao2 패키지 : 아래 설정은 삭제하면 dao2 패키지가 실행되지 않음!!! 
+ *    Mybatis 자체적으로 관리하는 방식이기 때문에, root-context.xml에 이미 설정한 내용이 있지만,  
+ *    src/main/resources/mybatis-config.xml에 다음 2가지를 별도로 명시적으로 설정해줘야 함.
+ *    	1. environments::environment::dataSource,
+ *    	2. mappers::mapper
+ -->	
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver" />
+				<property name="url" value="jdbc:mysql://127.0.0.1:3306/zbook_ex?useSSL=false&amp;serverTimezone=Asia/Seoul" />
+				<property name="username" value="joywins2" />
+				<property name="password" value="tiger" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="org/joy/dao6/dao6_Mapper.xml" />
+		<mapper resource="org/joy/dao4/mapper/dao4_Mapper.xml" />
+		<mapper class="org.joy.dao2.IF_MapperInterface2" />
+	</mappers>
   
 </configuration>

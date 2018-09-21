@@ -23,11 +23,11 @@ public interface IF_MapperInterface {
 	@Select("select user_id, user_name, email "
 			+ "from ztbl_member "
 			+ "where user_id = #{id} and user_pw = #{pw}")
-	public String getEmail_AnnotationedInterface(
+	public String getMember_AnnotationedInterface(
 			@Param("id") String id,
 			@Param("pw") String pw);	
 	
-	public MemberVO getEmail_MixedIfAndXml(
+	public MemberVO getMember_MixedIfAndXml(
 			@Param("id") String id,
 			@Param("pw") String pw);	
 	
@@ -36,8 +36,8 @@ public interface IF_MapperInterface {
 	 *    type : SQL문을 만들어 내는 클래스.
 	 *    method : SQL문이 반환되는 메서드 이름.
 	 */
-	@SelectProvider(type=MemberSelectProvider.class, method="getUserName_SelectProvider")
-	public MemberVO getUserName_SelectProvider(
+	@SelectProvider(type=MemberSelectProvider.class, method="getMember_SelectProvider")
+	public MemberVO getMember_SelectProvider(
 			@Param("type") String type,
 			@Param("keyword") String keyword);
 		

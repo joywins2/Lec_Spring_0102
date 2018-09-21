@@ -9,7 +9,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 패키지익스플로러와 상관없이 개발자가 여기서 지정한 경로명이 프로젝트에서 통용됨. -->
-<mapper namespace="org.joy.dao.IF_MapperInterface">
+<mapper namespace="org.joy.dao6.dao6_Mapper">
+
+	<select id="getMySqlVersion" resultType="String">
+        SELECT VERSION()
+    </select>
+    
 
 	<sql id="BaseColumns">
 		user_id,
@@ -28,11 +33,16 @@
 	</resultMap>
 
 
-	<select id="getMember_MixedIfAndXml" resultMap="memberResultMap">
+	<select id="getMember_DynamicSql" resultMap="memberResultMap">
 		select  
 		<include refid="BaseColumns"/>
-		from ztbl_member 
-		where user_id = #{id} and user_pw = #{pw}
+		from ztbl_member
+		<where>			
+		    <if test = "_parameter != null">
+		        user_id = #{id}
+		    </if>
+		</where>
 	</select>
-
+    
+    
 </mapper>

@@ -26,28 +26,28 @@ public class MapperInterfaceTest {
 	public void testTime() {
 		//fail("Not yet implemented");
 		System.out.println(mapper.getClass().getName());
-		System.out.println("getTime : " + mapper.getTime());
+		System.out.println("testGetTime : " + mapper.getTime());
 	}	
 
 	@Test
-	public void testGetEmail_AnnotationedInterface() {
+	public void testGetMember_AnnotationedInterface() {
 		//fail("Not yet implemented");
-		String email = mapper.getEmail_AnnotationedInterface("user123", "user123");
-		System.out.println("getEmail_AnnotationedInterface : " + email);
+		String email = mapper.getMember_AnnotationedInterface("user123", "user123");
+		System.out.println("testGetMember_AnnotationedInterface : " + email);
 	}
 
 	@Test
-	public void testGetEmail_MixedIfAndXml() {
+	public void testGetMember_MixedIfAndXml() {
 		//fail("Not yet implemented");
-		MemberVO member = mapper.getEmail_MixedIfAndXml("user123", "user123");
-		System.out.println("getEmail_MixedIfAndXml : " + member.toString());
+		MemberVO member = mapper.getMember_MixedIfAndXml("user123", "user123");
+		System.out.println("testGetMember_MixedIfAndXml : " + member.toString());
 	}
 
 	@Test
-	public void testGetUserName_SelectProvider() {
+	public void testGetMember_SelectProvider() {
 		//fail("Not yet implemented");
-		MemberVO member = mapper.getUserName_SelectProvider("id", "user123");
-		System.out.println("getUserName_SelectProvider : " + member.toString());
+		MemberVO member = mapper.getMember_SelectProvider("id", "user123");
+		System.out.println("testGetUserName_SelectProvider : " + member.toString());
 	}
 
 }

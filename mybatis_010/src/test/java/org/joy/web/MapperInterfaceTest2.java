@@ -3,6 +3,7 @@ package org.joy.web;
 import javax.inject.Inject;
 
 import org.joy.dao2.IF_MapperInterface2;
+import org.joy.dao2.MemberDao2;
 import org.joy.domain.MemberVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,10 +41,10 @@ public class MapperInterfaceTest2 {
 	}
 	@Test
 	public void testSelectMemberByUserId() {
-		selectMemberByUserId("user888");		
+		selectMemberByUserId("user123");		
 	}
 
-	@Test
+	//@Test
 	public void testInsertMember() {
 		//fail("Not yet implemented");
 		MemberVO member = new MemberVO("user888", "user888pw", "user888Name", "user888@email.com");
@@ -52,7 +53,7 @@ public class MapperInterfaceTest2 {
 		selectMemberByUserId(member.getUser_id());
 	}
 
-	@Test
+	//@Test
 	public void testUpdateMember() {
 		//fail("Not yet implemented");
 		MemberVO member = new MemberVO("user888", "user999pw", "user999Name", "user999@email.com");		
@@ -61,7 +62,7 @@ public class MapperInterfaceTest2 {
 		selectMemberByUserId(member.getUser_id());
 	}
 
-	@Test
+	//@Test
 	public void testDeleteMember() {
 		//fail("Not yet implemented");
 		String user_id = "user888";		
